@@ -3,22 +3,22 @@ import { Social } from "@/types";
 export const socials: Social[] = [
   {
     platform: "GitHub",
-    url: "https://github.com",
+    url: "https://github.com/muhammadali-dotcom",
     iconName: "Github",
   },
   {
     platform: "LinkedIn",
-    url: "https://linkedin.com",
+    url: "https://www.linkedin.com/in/muhammad-ali-saleem-69b892245/",
     iconName: "Linkedin",
   },
   {
     platform: "WhatsApp",
-    url: "https://wa.me/1234567890", // placeholder
+    url: "https://wa.me/923142181757",
     iconName: "MessageCircle",
   },
   {
     platform: "Email",
-    url: "mailto:hello@example.com",
+    url: "mailto:alisaleem.as719@gmail.com",
     iconName: "Mail",
   },
 ];

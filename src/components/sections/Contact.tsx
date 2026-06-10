@@ -18,6 +18,30 @@ export const Contact: React.FC = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatus("sending");
+
+  try {
+    const response = await fetch("https://formspree.io/f/xaqzbklp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formState),
+    });
+
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    setStatus("success");
+    setFormState({ name: "", email: "", message: "" });
+  } catch (error) {
+    console.error(error);
+    setStatus("error");
+  } finally {
+    setTimeout(() => setStatus("idle"), 5000);
+  }
+};
     e.preventDefault();
     setStatus("sending");
 
@@ -78,7 +102,7 @@ export const Contact: React.FC = () => {
                             {social.platform}
                           </span>
                           <span className="text-sm font-semibold text-text-primary group-hover:text-emerald-accent">
-                            {social.platform === "Email" ? "hello@example.com" : `Connect on ${social.platform}`}
+                            {social.platform === "Email" ? "alisaleem.as719@gmail.com" : `Connect on ${social.platform}`}
                           </span>
                         </div>
                       </a>
