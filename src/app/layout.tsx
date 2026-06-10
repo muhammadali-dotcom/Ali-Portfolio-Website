@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html
       lang="en"
@@ -68,6 +70,7 @@ export default function RootLayout({
     >
       <body className="bg-dark-bg text-text-primary min-h-screen flex flex-col justify-between selection:bg-emerald-accent/30 selection:text-emerald-accent">
         {/* Scroll Progress Bar */}
+        <ScrollToTop />
         <ScrollProgress />
 
         {/* Sticky Header Navigation */}
