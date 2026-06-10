@@ -1,60 +1,82 @@
 "use client";
 
-import React from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
+import type { ReactNode } from "react";
+import {
+  motion,
+  type HTMLMotionProps,
+  type Variants,
+} from "framer-motion";
 
 interface StaggerChildrenProps extends HTMLMotionProps<"div"> {
-  children: React.ReactNode;
+  children: ReactNode;
   staggerDelay?: number;
   delay?: number;
+  once?: boolean;
 }
 
-export const StaggerChildren: React.FC<StaggerChildrenProps> = ({
+interface StaggerItemProps extends HTMLMotionProps<"div"> {
+  children: ReactNode;
+  distance?: number;
+}
+
+const containerVariants: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  show: {
+    opacity: 1,
+  },
+};
+
+export default function StaggerChildren({
   children,
   staggerDelay = 0.1,
   delay = 0,
+  once = true,
   className,
   ...props
-}) => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerDelay,
-        delayChildren: delay,
-      },
-    },
-  };
-
+}: StaggerChildrenProps) {
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{
+        once,
+        amount: 0.18,
+        margin: "0px 0px -70px 0px",
+      }}
+      transition={{
+        staggerChildren: staggerDelay,
+        delayChildren: delay,
+      }}
       className={className}
       {...props}
     >
       {children}
     </motion.div>
   );
-};
+}
 
-export const StaggerItem: React.FC<HTMLMotionProps<"div">> = ({
+export function StaggerItem({
   children,
+  distance = 22,
   className,
   ...props
-}) => {
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+}: StaggerItemProps) {
+  const itemVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: distance,
+      filter: "blur(4px)",
+    },
     show: {
       opacity: 1,
       y: 0,
+      filter: "blur(0px)",
       transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 15,
+        duration: 0.55,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -64,6 +86,4 @@ export const StaggerItem: React.FC<HTMLMotionProps<"div">> = ({
       {children}
     </motion.div>
   );
-};
-
-export default StaggerChildren;
+}

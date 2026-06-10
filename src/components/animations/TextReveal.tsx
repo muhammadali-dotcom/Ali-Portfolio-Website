@@ -1,40 +1,54 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import {
+  motion,
+  type HTMLMotionProps,
+  type Variants,
+} from "framer-motion";
 
-interface TextRevealProps {
+interface TextRevealProps extends HTMLMotionProps<"span"> {
   text: string;
-  className?: string;
   delay?: number;
+  staggerDelay?: number;
+  duration?: number;
 }
 
-export const TextReveal: React.FC<TextRevealProps> = ({
+export default function TextReveal({
   text,
-  className,
   delay = 0,
-}) => {
-  const words = text.split(" ");
+  staggerDelay = 0.065,
+  duration = 0.45,
+  className,
+  ...props
+}: TextRevealProps) {
+  const words = text.trim().split(/\s+/);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  const containerVariants: Variants = {
+    hidden: {
+      opacity: 0,
+    },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
         delayChildren: delay,
+        staggerChildren: staggerDelay,
       },
     },
   };
 
-  const wordVariants = {
-    hidden: { opacity: 0, y: 15 },
+  const wordVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: 14,
+      filter: "blur(4px)",
+    },
     visible: {
       opacity: 1,
       y: 0,
+      filter: "blur(0px)",
       transition: {
-        duration: 0.4,
-        ease: "easeOut" as const,
+        duration,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -45,18 +59,18 @@ export const TextReveal: React.FC<TextRevealProps> = ({
       initial="hidden"
       animate="visible"
       className={className}
+      {...props}
     >
-      {words.map((word, idx) => (
+      {words.map((word, index) => (
         <motion.span
-          key={idx}
+          key={`${word}-${index}`}
           variants={wordVariants}
-          className="inline-block mr-[0.25em]"
+          className="inline-block whitespace-pre"
         >
           {word}
+          {index < words.length - 1 ? " " : ""}
         </motion.span>
       ))}
     </motion.span>
   );
-};
-
-export default TextReveal;
+}

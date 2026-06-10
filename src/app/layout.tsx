@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
+
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
@@ -9,52 +11,99 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Muhammad Ali | Software Engineer & React Native Engineer",
-  description: "Software Engineer and React Native Engineer specializing in building high-performance Next.js web applications, immersive 3D interfaces, and cross-platform mobile products.",
+  metadataBase: new URL("https://ali.dev"),
+
+  title: {
+    default: "Muhammad Ali | Software Engineer",
+    template: "%s | Muhammad Ali",
+  },
+
+  description:
+    "Muhammad Ali is a Software Engineer specializing in modern web applications, React Native mobile apps, immersive interfaces, and high-performance digital products.",
+
   keywords: [
-    "Frontend Developer",
-    "React Native Developer",
-    "Next.js Developer",
+    "Muhammad Ali",
     "Software Engineer",
-    "Three.js Developer",
+    "Frontend Developer",
     "React Developer",
-    "Web Developer",
-    "Freelance Developer"
+    "Next.js Developer",
+    "React Native Developer",
+    "Mobile App Developer",
+    "Three.js Developer",
+    "JavaScript Developer",
+    "TypeScript Developer",
+    "Freelance Software Engineer",
+    "Portfolio",
   ],
-  authors: [{ name: "Ali" }],
-  creator: "Ali",
+
+  authors: [{ name: "Muhammad Ali" }],
+  creator: "Muhammad Ali",
+  publisher: "Muhammad Ali",
+
+  alternates: {
+    canonical: "/",
+  },
+
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ali.dev", // Replace with real URL if needed
+    url: "/",
     title: "Muhammad Ali | Software Engineer",
-    description: "Software Engineer building high-performance web applications and Softwares.",
-    siteName: "Ali Portfolio",
+    description:
+      "Software Engineer building high-performance web applications, mobile apps, and modern digital experiences.",
+    siteName: "Muhammad Ali Portfolio",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Ali Portfolio Preview Image",
-      }
+        alt: "Muhammad Ali Portfolio Preview",
+      },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Ali | Software Engineer & React Native Engineer",
-    description: "Software Engineer and React Native Engineer specializing in high-performance Next.js web applications.",
+    title: "Muhammad Ali | Software Engineer",
+    description:
+      "Software Engineer specializing in Next.js, React Native, modern web apps, and digital products.",
     creator: "@ali_dev",
     images: ["/og-image.png"],
   },
-  metadataBase: new URL("https://ali.dev"), // Prevents issues with relative OG paths
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#050816",
 };
 
 export default function RootLayout({
@@ -62,27 +111,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}
+      suppressHydrationWarning
     >
-      <body className="bg-dark-bg text-text-primary min-h-screen flex flex-col justify-between selection:bg-emerald-accent/30 selection:text-emerald-accent">
-        {/* Scroll Progress Bar */}
-        <ScrollToTop />
-        <ScrollProgress />
+      <body className="min-h-screen overflow-x-hidden bg-dark-bg text-text-primary selection:bg-emerald-accent/25 selection:text-emerald-accent">
+        <div className="relative flex min-h-screen flex-col">
+          <ScrollToTop />
+          <ScrollProgress />
 
-        {/* Sticky Header Navigation */}
-        <Navbar />
+          <Navbar />
 
-        {/* Page Content */}
-        <main className="flex-1 w-full flex flex-col">
-          {children}
-        </main>
+          <main className="relative z-10 flex w-full flex-1 flex-col">
+            {children}
+          </main>
 
-        {/* Page Footer */}
-        <Footer />
+          <Footer />
+        </div>
       </body>
     </html>
   );

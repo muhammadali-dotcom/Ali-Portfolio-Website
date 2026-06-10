@@ -1,106 +1,115 @@
 "use client";
 
-import React from "react";
 import dynamic from "next/dynamic";
 import { ArrowDown } from "lucide-react";
+
 import Button from "../ui/Button";
 import TextReveal from "../animations/TextReveal";
 import FadeInUp from "../animations/FadeInUp";
 
-// Lazy load the Three.js Canvas component with SSR disabled
 const TechSphereCanvas = dynamic(() => import("../three/TechSphereCanvas"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[350px] lg:h-[600px] flex items-center justify-center text-text-secondary font-medium">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 border-4 border-emerald-accent border-t-transparent rounded-full animate-spin" />
-        Initializing 3D Environment...
+    <div className="flex h-[420px] w-full items-center justify-center rounded-[2rem] border border-emerald-accent/10 bg-dark-surface/40 text-text-secondary lg:h-[620px]">
+      <div className="flex flex-col items-center gap-4 text-sm font-medium">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-emerald-accent border-t-transparent" />
+        <span>Initializing 3D Environment...</span>
       </div>
     </div>
   ),
 });
 
-export const Hero: React.FC = () => {
+export default function Hero() {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden px-6"
+      className="relative flex min-h-screen items-center overflow-hidden px-5 pb-10 pt-28 sm:px-6 lg:px-8 lg:pb-8 lg:pt-24"
     >
-      {/* Background Glows */}
-      <div className="absolute top-[20%] left-[10%] w-[350px] h-[350px] radial-glow opacity-60 pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] radial-glow opacity-40 pointer-events-none" />
+      {/* Background glows */}
+      <div className="pointer-events-none absolute left-[6%] top-[18%] h-[320px] w-[320px] radial-glow opacity-60 blur-sm" />
+      <div className="pointer-events-none absolute bottom-[10%] right-[5%] h-[460px] w-[460px] radial-glow opacity-40 blur-sm" />
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center z-10">
+      {/* Subtle grid overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.025)_1px,transparent_1px)] bg-[size:72px_72px] opacity-40" />
 
-        {/* Hero Left Content */}
-        <div className="flex flex-col justify-center text-left">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
+        {/* Left content */}
+        <div className="flex flex-col justify-center text-left lg:min-h-[680px]">
           <FadeInUp delay={0.1}>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-emerald-accent bg-emerald-accent-dim/15 border border-emerald-accent-dim/30 mb-6">
+            <span className="mb-6 inline-flex items-center rounded-full border border-emerald-accent/20 bg-emerald-accent/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-accent shadow-[0_0_28px_rgba(16,185,129,0.08)]">
               Available for Freelance & Remote Work
             </span>
           </FadeInUp>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-none mb-6">
-            <span className="text-text-secondary block text-xl sm:text-2xl font-medium mb-3 tracking-wide">
-              Hi, I'm
+          <h1 className="mb-7 text-4xl font-extrabold leading-[0.98] tracking-tight text-text-primary sm:text-5xl lg:text-6xl xl:text-7xl">
+            <span className="mb-4 block text-xl font-medium tracking-wide text-text-secondary sm:text-2xl">
+              Hi, I&apos;m
             </span>
-            <span className="text-text-primary block">
+
+            <span className="block">
               <TextReveal text="Muhammad Ali" delay={0.2} />
             </span>
-            <span className="bg-gradient-to-r from-emerald-accent via-emerald-400 to-teal-500 bg-clip-text text-transparent block mt-2">
+
+            <span className="mt-4 block bg-gradient-to-r from-emerald-accent via-emerald-400 to-teal-400 bg-clip-text text-transparent">
               <TextReveal text="Software Engineer" delay={0.4} />
             </span>
           </h1>
 
           <FadeInUp delay={0.6}>
-            <p className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-xl mb-10">
-              I construct immersive web experiences and high-fidelity mobile products using Next.js, React Native, and interactive 3D elements. Let's translate your concepts into clean, functional code.
+            <p className="mb-10 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg lg:text-xl">
+              I build immersive web experiences and high-quality mobile products
+              using Next.js, React Native, and interactive 3D interfaces. Let&apos;s
+              turn your ideas into clean, scalable, and functional software.
             </p>
           </FadeInUp>
 
-          <FadeInUp delay={0.8} className="flex flex-wrap gap-4">
+          <FadeInUp delay={0.8} className="flex flex-col gap-4 sm:flex-row">
             <Button
               variant="primary"
               size="lg"
-              onClick={() => {
-                const element = document.getElementById("projects");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => scrollToSection("projects")}
             >
               Explore My Projects
             </Button>
+
             <Button
               variant="outline"
               size="lg"
-              onClick={() => {
-                const element = document.getElementById("contact");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => scrollToSection("contact")}
             >
               Get In Touch
             </Button>
           </FadeInUp>
         </div>
 
-        {/* Hero Right 3D Scene */}
-        <div className="relative flex items-center justify-center w-full">
-          <FadeInUp delay={0.4} className="w-full">
+        {/* Right 3D scene */}
+        <div className="relative flex min-h-[520px] w-full items-end justify-center lg:min-h-[680px]">
+          <FadeInUp delay={0.35} className="flex h-full w-full items-end">
             <TechSphereCanvas />
           </FadeInUp>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity duration-200">
-        <span className="text-xs uppercase tracking-widest text-text-secondary select-none">
+      <div className="absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-60 transition-opacity duration-200 hover:opacity-100 lg:flex">
+        <span className="select-none text-[10px] font-semibold uppercase tracking-[0.28em] text-text-secondary">
           Scroll Down
         </span>
-        <a href="#about" className="animate-bounce p-1.5 rounded-full bg-dark-surface/60 border border-glass-border/30 text-emerald-accent">
-          <ArrowDown className="w-4 h-4" />
-        </a>
+
+        <button
+          type="button"
+          onClick={() => scrollToSection("about")}
+          aria-label="Scroll to about section"
+          className="rounded-full border border-glass-border/40 bg-dark-surface/70 p-2 text-emerald-accent shadow-[0_0_24px_rgba(16,185,129,0.08)] backdrop-blur-md transition hover:border-emerald-accent/40 hover:bg-emerald-accent/10"
+        >
+          <ArrowDown className="h-4 w-4 animate-bounce" />
+        </button>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}
