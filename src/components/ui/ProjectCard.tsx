@@ -37,9 +37,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
         {/* Real Image */}
         <div className="w-full h-full relative opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
-          {image && (
+          {image ? (
+            <Image
+              src={image}
+              alt={`${title} screenshot`}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className={featured ? "object-cover" : "object-contain p-4"}
+            />
+          ) : (
             <div className="w-full h-full bg-slate-900 flex items-center justify-center text-xs text-text-secondary">
-              {/* Representing the screenshot */}
               <span className="text-emerald-accent/70 font-semibold">{title} Preview</span>
             </div>
           )}

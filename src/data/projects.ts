@@ -14,8 +14,8 @@ export const projects: Project[] = [
   {
     id: "project-2",
     title: "QueryBridge – AI-Powered Natural Language SQL Platform",
-    description: "HAn AI-powered platform that enables users to query databases using natural language instead of writing SQL. The system generates schema-aware SQL queries while preventing unsafe operations such as DELETE, UPDATE, or DROP. Built with security-first principles, query validation, query history, and interactive result visualization.",
-    tech: ["JavaScript", "Next.js", "Tailwind CSS", "Node.js", "Express.js", "SQLite", "Groq Cloud"],
+    description: "An AI-powered platform that enables users to query databases using natural language instead of writing SQL. The system generates schema-aware SQL queries while preventing unsafe operations such as DELETE, UPDATE, or DROP. Built with security-first principles, query validation, query history, and interactive result visualization.",
+    tech: ["TypeScript", "Next.js", "Tailwind CSS", "Node.js", "Express.js", "SQLite"],
     image: "/QueryBridge.png",
     github: "https://github.com/muhammadali-dotcom/QueryBridge.git",
     live: "https://example.com",
@@ -25,7 +25,7 @@ export const projects: Project[] = [
     title: "Aetherial 3D eCommerce",
     description: "A fully immersive 3D online shopping experience where users customize, interact with, and buy product designs inside a responsive WebGL-driven sandbox.",
     tech: ["Next.js", "Three.js", "React Three Fiber", "Framer Motion", "Stripe"],
-    image: "/images/aetherial-3d.png",
+    image: "/Aetherial.png",
     github: "https://github.com",
     live: "https://example.com",
   },
@@ -34,7 +34,7 @@ export const projects: Project[] = [
     title: "SyncFlow Kanban Planner",
     description: "A collaborative workspace and tasks organizer using drag-and-drop mechanics, keyboard shortcuts, persistent state sync, and real-time offline-first sync.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Dexie.js"],
-    image: "/images/syncflow.png",
+    image: "/SyncFlow.png",
     github: "https://github.com",
     live: "https://example.com",
   }
