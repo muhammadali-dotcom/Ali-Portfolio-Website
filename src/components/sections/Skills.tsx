@@ -9,7 +9,7 @@ import { skills } from "@/data/skills";
 const categories = [
   { id: "frontend", label: "Frontend Engineering" },
   { id: "mobile", label: "Mobile Development" },
-  { id: "backend", label: "Backend & Integration (Conceptual)" },
+  { id: "backend", label: "Backend & Integration" },
   { id: "tools", label: "Development Tools" },
 ];
 

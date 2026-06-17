@@ -15,7 +15,7 @@ export const About: React.FC = () => {
         <SectionHeading
           badge="About Me"
           title="Translating Complex Visions Into Premium Codebases"
-          subtitle="I construct digital products that combine design precision with strong technical execution. My emphasis is on creating fast, interactive, and high-fidelity applications."
+          subtitle="I'm a Software Engineer who enjoys building scalable applications and solving complex problems through clean, maintainable code. My experience spans full-stack development, AI integration, and real-time systems, with a strong focus on performance and user experience. I believe great software isn't just about writing code—it's about creating products that are reliable, intuitive, and deliver real value to users."
         />
       </FadeInUp>
 
@@ -26,9 +26,9 @@ export const About: React.FC = () => {
               <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-accent-dim/10 text-emerald-accent border border-emerald-accent-dim/20 mb-6">
                 <Zap className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-text-primary mb-3">High Performance</h3>
+              <h3 className="text-lg font-bold text-text-primary mb-3">Scalable Systems</h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Aiming for 95+ Lighthouse scores. Optimizing bundle size, image processing, and server layouts to ensure lightning-fast site loads.
+                Designing high-performance applications with clean architecture, efficient APIs, and maintainable codebases.
               </p>
             </div>
           </GlassCard>
@@ -40,9 +40,9 @@ export const About: React.FC = () => {
               <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-accent-dim/10 text-emerald-accent border border-emerald-accent-dim/20 mb-6">
                 <Eye className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-text-primary mb-3">Cinematic Aesthetics</h3>
+              <h3 className="text-lg font-bold text-text-primary mb-3">Modern User Experiences</h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Utilizing Three.js (React Three Fiber) and Framer Motion to develop engaging micro-interactions and smooth scroll triggers.
+                Creating responsive and interactive interfaces using modern technologies and thoughtful design principles.
               </p>
             </div>
           </GlassCard>
@@ -54,9 +54,9 @@ export const About: React.FC = () => {
               <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-accent-dim/10 text-emerald-accent border border-emerald-accent-dim/20 mb-6">
                 <Globe className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-text-primary mb-3">Remote Collaboration</h3>
+              <h3 className="text-lg font-bold text-text-primary mb-3">Continuous Growth</h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Working closely with clients across USA, UK, and EU timezones. Aligning design files, specs, and code implementations seamlessly.
+                Constantly learning, experimenting, and refining my craft to stay ahead in an ever-evolving tech landscape.
               </p>
             </div>
           </GlassCard>
