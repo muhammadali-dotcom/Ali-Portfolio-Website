@@ -42,16 +42,7 @@ export const Contact: React.FC = () => {
     setTimeout(() => setStatus("idle"), 5000);
   }
 };
-    e.preventDefault();
-    setStatus("sending");
-
-    // Simulate form submission delay
-    setTimeout(() => {
-      setStatus("success");
-      setFormState({ name: "", email: "", message: "" });
-      setTimeout(() => setStatus("idle"), 5000);
-    }, 1500);
-  };
+ 
 
   return (
     <section id="contact" className="relative py-24 px-6 max-w-7xl mx-auto">
