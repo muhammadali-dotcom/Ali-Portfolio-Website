@@ -1,59 +1,144 @@
 import React from "react";
 import SectionHeading from "../ui/SectionHeading";
-import GlassCard from "../ui/GlassCard";
-import TechBadge from "../ui/TechBadge";
 import FadeInUp from "../animations/FadeInUp";
-import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { skills } from "@/data/skills";
 
-const categories = [
-  { id: "frontend", label: "Frontend Engineering" },
-  { id: "mobile", label: "Mobile Development" },
-  { id: "backend", label: "Backend & Integration" },
-  { id: "tools", label: "Development Tools" },
+const coreCapabilities = [
+  "Responsive UI",
+  "Enterprise Apps",
+  "eCommerce",
+  "CMS Systems",
+  "SEO",
+  "Motion & Interaction",
+  "Frontend Dev",
+  "Web Apps",
+  "AI Integrations",
+  "Performance",
 ];
 
-export const Skills: React.FC = () => {
+const services = [
+  "Business Websites",
+  "Landing Pages",
+  "SaaS & Web Apps",
+  "eCommerce",
+  "Admin Dashboards",
+  "CMS Integration",
+  "API Development",
+  "Portfolio Sites",
+];
+
+const colors = [
+  "from-lime-300 to-emerald-400",
+  "from-pink-300 to-fuchsia-400",
+  "from-blue-400 to-indigo-400",
+  "from-orange-300 to-orange-500",
+  "from-cyan-300 to-teal-400",
+  "from-zinc-200 to-zinc-400",
+];
+
+const MarqueeRow = ({
+  title,
+  items,
+  reverse = false,
+  speed = "35s",
+}: {
+  title: string;
+  items: string[];
+  reverse?: boolean;
+  speed?: string;
+}) => {
+  const repeatedItems = [...items, ...items];
+
   return (
-    <section id="skills" className="relative py-24 px-6 max-w-7xl mx-auto">
-      {/* Background Glow */}
-      <div className="absolute top-[20%] left-[5%] w-[400px] h-[400px] radial-glow opacity-30 pointer-events-none" />
+    <div className="relative w-full overflow-hidden">
+      <div className="mx-auto mb-5 flex max-w-7xl items-center gap-3 px-6">
+        <span className="h-px w-7 bg-emerald-accent" />
+        <p className="text-xs uppercase tracking-[0.22em] text-text-secondary">
+          {title}
+        </p>
+      </div>
 
-      <FadeInUp>
-        <SectionHeading
-          badge="Expertise"
-          title="Skills & Technologies"
-          subtitle="A summary of the languages, frameworks, libraries, and tools I use to bring ideas to life."
-        />
-      </FadeInUp>
+      <div className="relative flex overflow-hidden">
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-dark-bg to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-dark-bg to-transparent" />
 
-      <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-        {categories.map((cat) => {
-          const categorySkills = skills.filter((s) => s.category === cat.id);
-          return (
-            <StaggerItem key={cat.id}>
-              <GlassCard className="h-full hover:border-emerald-accent/20 transition-all duration-300">
-                <h3 className="text-xl font-bold text-text-primary mb-6 border-b border-glass-border/30 pb-3 flex items-center justify-between">
-                  {cat.label}
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-accent-dim/10 text-emerald-accent border border-emerald-accent-dim/20">
-                    {categorySkills.length} Items
-                  </span>
-                </h3>
-                
-                <div className="flex flex-wrap gap-2.5">
-                  {categorySkills.map((skill) => (
-                    <TechBadge
-                      key={skill.name}
-                      name={skill.name}
-                      className="px-3.5 py-2 hover:bg-emerald-accent hover:text-dark-bg transition-colors duration-300 cursor-default"
-                    />
-                  ))}
-                </div>
-              </GlassCard>
-            </StaggerItem>
-          );
-        })}
-      </StaggerChildren>
+        <div
+          className={`flex min-w-max shrink-0 gap-0 ${
+            reverse ? "animate-scroll-reverse" : "animate-scroll"
+          }`}
+          style={{ animationDuration: speed }}
+        >
+          {repeatedItems.map((item, index) => (
+            <span
+              key={`${item}-a-${index}`}
+              className={`whitespace-nowrap rounded-full bg-gradient-to-r ${
+                colors[index % colors.length]
+              } px-8 py-4 text-lg font-semibold text-black shadow-[0_0_35px_rgba(255,255,255,0.08)]`}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+
+        <div
+          className={`flex min-w-max shrink-0 gap-0 ${
+            reverse ? "animate-scroll-reverse" : "animate-scroll"
+          }`}
+          style={{ animationDuration: speed }}
+          aria-hidden="true"
+        >
+          {repeatedItems.map((item, index) => (
+            <span
+              key={`${item}-b-${index}`}
+              className={`whitespace-nowrap rounded-full bg-gradient-to-r ${
+                colors[index % colors.length]
+              } px-8 py-4 text-lg font-semibold text-black shadow-[0_0_35px_rgba(255,255,255,0.08)]`}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const Skills: React.FC = () => {
+  const techStack = skills.map((skill) => skill.name);
+
+  return (
+    <section id="skills" className="relative overflow-hidden py-24">
+      <div className="absolute left-[10%] top-[15%] h-[420px] w-[420px] rounded-full bg-emerald-accent/10 blur-[120px]" />
+      <div className="absolute right-[5%] bottom-[10%] h-[360px] w-[360px] rounded-full bg-lime-300/10 blur-[120px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <FadeInUp>
+          <SectionHeading
+            badge="Expertise"
+            title="Tech I work with."
+            subtitle="From frontend experiences to backend systems, these are the tools, technologies, and services I use to build modern digital products."
+          />
+        </FadeInUp>
+      </div>
+
+      <div className="relative z-10 mt-16 space-y-10">
+        <MarqueeRow title="Core Capabilities" items={coreCapabilities} speed="28s" />
+        <MarqueeRow title="Tech Stacks" items={techStack} reverse speed="34s" />
+        <MarqueeRow title="Services" items={services} speed="30s" />
+      </div>
+
+      <div className="relative z-10 mx-auto mt-16 max-w-7xl px-6">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
+          <h3 className="text-2xl font-bold text-text-primary">
+            Always learning. Always building.
+          </h3>
+          <p className="mt-3 max-w-3xl leading-relaxed text-text-secondary">
+            I focus on writing clean, scalable code and choosing the right tools
+            for the job — whether it is a landing page, SaaS dashboard, API, AI
+            integration, or full-stack business application.
+          </p>
+        </div>
+      </div>
     </section>
   );
 };
