@@ -51,7 +51,7 @@ const MarqueeRow = ({
 
   return (
     <div className="relative w-full overflow-hidden">
-      <div className="mx-auto mb-5 flex max-w-7xl items-center gap-3 px-6">
+      <div className="mx-auto mb-5 flex max-w-7xl items-center gap-3 px-4 sm:px-6">
         <span className="h-px w-7 bg-emerald-accent" />
         <p className="text-xs uppercase tracking-[0.22em] text-text-secondary">
           {title}
@@ -107,11 +107,11 @@ export const Skills: React.FC = () => {
   const techStack = skills.map((skill) => skill.name);
 
   return (
-    <section id="skills" className="relative overflow-hidden py-24">
+    <section id="skills" className="relative overflow-hidden py-16 lg:py-24">
       <div className="absolute left-[10%] top-[15%] h-[420px] w-[420px] rounded-full bg-emerald-accent/10 blur-[120px]" />
       <div className="absolute right-[5%] bottom-[10%] h-[360px] w-[360px] rounded-full bg-lime-300/10 blur-[120px]" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <FadeInUp>
           <SectionHeading
             badge="Expertise"
@@ -121,14 +121,14 @@ export const Skills: React.FC = () => {
         </FadeInUp>
       </div>
 
-      <div className="relative z-10 mt-16 space-y-10">
+      <div className="relative z-10 mt-10 space-y-8 lg:mt-16 lg:space-y-10">
         <MarqueeRow title="Core Capabilities" items={coreCapabilities} speed="28s" />
         <MarqueeRow title="Tech Stacks" items={techStack} reverse speed="34s" />
         <MarqueeRow title="Services" items={services} speed="30s" />
       </div>
 
-      <div className="relative z-10 mx-auto mt-16 max-w-7xl px-6">
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
+      <div className="relative z-10 mx-auto mt-10 max-w-7xl px-4 sm:px-6 lg:mt-16">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl lg:p-8">
           <h3 className="text-2xl font-bold text-text-primary">
             Always learning. Always building.
           </h3>

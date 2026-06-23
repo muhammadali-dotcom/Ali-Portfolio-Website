@@ -7,7 +7,7 @@ import { projects } from "@/data/projects";
 
 export const Projects: React.FC = () => {
   return (
-    <section id="projects" className="relative py-24 px-6 max-w-7xl mx-auto">
+    <section id="projects" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       {/* Background Glow */}
       <div className="absolute top-[40%] right-[5%] w-[450px] h-[450px] radial-glow opacity-30 pointer-events-none" />
 

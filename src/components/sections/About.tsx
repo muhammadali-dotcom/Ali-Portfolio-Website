@@ -7,7 +7,7 @@ import { Zap, Eye, Globe } from "lucide-react";
 
 export const About: React.FC = () => {
   return (
-    <section id="about" className="relative py-24 px-6 max-w-7xl mx-auto">
+    <section id="about" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       {/* Background Glow */}
       <div className="absolute top-[30%] right-[10%] w-[350px] h-[350px] radial-glow opacity-30 pointer-events-none" />
 

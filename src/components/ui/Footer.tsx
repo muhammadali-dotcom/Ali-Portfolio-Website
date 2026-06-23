@@ -5,7 +5,7 @@ import { socials } from "@/data/socials";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-glass-border/30 bg-dark-surface/30 py-12 px-6">
+    <footer className="border-t border-glass-border/30 bg-dark-surface/30 py-8 px-4 sm:px-6 lg:py-12">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Logo and Copy */}
         <div className="flex flex-col items-center md:items-start gap-2">

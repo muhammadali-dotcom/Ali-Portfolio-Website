@@ -37,7 +37,7 @@ export default function Hero() {
       {/* Subtle grid overlay */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.025)_1px,transparent_1px)] bg-[size:72px_72px] opacity-40" />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
         {/* Left content */}
         <div className="flex flex-col justify-center text-left lg:min-h-[680px]">
           <FadeInUp delay={0.1}>
@@ -46,7 +46,7 @@ export default function Hero() {
             </span>
           </FadeInUp>
 
-          <h1 className="mb-7 text-4xl font-extrabold leading-[0.98] tracking-tight text-text-primary sm:text-5xl lg:text-6xl xl:text-7xl">
+          <h1 className="mb-2 text-5xl font-extrabold leading-[0.95] tracking-tight text-text-primary sm:text-5xl lg:text-6xl xl:text-7xl">
             <span className="mb-4 block text-xl font-medium tracking-wide text-text-secondary sm:text-2xl">
               Hi, I&apos;m
             </span>
@@ -54,14 +54,14 @@ export default function Hero() {
             <span className="block">
               <TextReveal text="Muhammad Ali" delay={0.2} />
             </span>
-
-            <span className="mt-4 block bg-gradient-to-r from-emerald-accent via-emerald-400 to-teal-400 bg-clip-text text-transparent">
-              <TextReveal text="Software Engineer" delay={0.4} />
-            </span>
           </h1>
 
+          <p className="mb-5 text-xl font-semibold text-emerald-400 sm:text-2xl lg:text-3xl">
+            <TextReveal text="Software Engineer" delay={0.4} />
+          </p>
+
           <FadeInUp delay={0.6}>
-            <p className="mb-10 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg lg:text-xl">
+            <p className="mb-8 max-w-xl text-base leading-relaxed text-text-secondary lg:text-xl">
               I build immersive web experiences and high-quality mobile products
               using Next.js, React Native, and interactive 3D interfaces. Let&apos;s
               turn your ideas into clean, scalable, and functional software.
@@ -88,10 +88,12 @@ export default function Hero() {
         </div>
 
         {/* Right 3D scene */}
-        <div className="relative flex min-h-[520px] w-full items-end justify-center lg:min-h-[680px]">
-          <FadeInUp delay={0.35} className="flex h-full w-full items-end">
-            <TechSphereCanvas />
-          </FadeInUp>
+        <div className="relative flex w-full justify-center lg:min-h-[680px] lg:items-center lg:-translate-y-8 xl:-translate-y-10">
+          <div className="w-full max-w-[420px] sm:max-w-[480px] lg:max-w-none">
+            <FadeInUp delay={0.35} className="w-full">
+              <TechSphereCanvas />
+            </FadeInUp>
+          </div>
         </div>
       </div>
 

@@ -49,7 +49,7 @@ const experience = [
 
 export const Experience: React.FC = () => {
   return (
-    <section id="experience" className="relative mx-auto max-w-6xl px-6 py-24">
+    <section id="experience" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 lg:py-24">
       <div className="pointer-events-none absolute left-[20%] top-[40%] h-[380px] w-[380px] radial-glow opacity-25" />
 
       <FadeInUp>
@@ -61,7 +61,7 @@ export const Experience: React.FC = () => {
         />
       </FadeInUp>
 
-      <div className="relative mt-16 border-l-2 border-glass-border pl-10 md:ml-44 md:pl-20">
+      <div className="relative mt-10 border-l-2 border-glass-border pl-8 md:ml-44 md:mt-16 md:pl-20">
         <StaggerChildren className="space-y-14">
           {experience.map((exp) => (
             <StaggerItem key={exp.id} className="relative">
@@ -69,7 +69,7 @@ export const Experience: React.FC = () => {
                 {exp.duration}
               </div>
 
-              <div className="absolute -left-[54px] md:-left-[94px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-emerald-accent bg-dark-bg shadow-[0_0_18px_rgba(16,185,129,0.75)]">
+              <div className="absolute -left-[14px] md:-left-[94px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-emerald-accent bg-dark-bg shadow-[0_0_18px_rgba(16,185,129,0.75)]">
                 <Briefcase className="h-3.5 w-3.5 text-emerald-accent" />
               </div>
 

@@ -48,8 +48,8 @@ export const TechSphereCanvas: React.FC = () => {
   if (isMobile) {
     return (
       <PageTransition className="h-full w-full">
-        <div className="relative flex h-full min-h-[520px] w-full items-end justify-center">
-          <div className="relative flex h-[520px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-emerald-accent/10 bg-[#030504]">
+        <div className="relative flex w-full items-center justify-center">
+          <div className="relative flex h-[440px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-emerald-accent/10 bg-[#030504] sm:h-[520px]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(16,185,129,0.16),transparent_35%),radial-gradient(circle_at_20%_80%,rgba(16,185,129,0.08),transparent_30%]" />
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:42px_42px] opacity-30" />
 
@@ -87,7 +87,7 @@ export const TechSphereCanvas: React.FC = () => {
 
   return (
     <PageTransition className="h-full w-full">
-      <div className="relative flex h-full min-h-[560px] w-full items-end justify-center">
+      <div className="relative flex h-full min-h-[560px] w-full items-center justify-center">
         <section className="relative h-[min(680px,calc(100vh-9rem))] min-h-[540px] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#030504]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(16,185,129,0.14),transparent_34%),radial-gradient(circle_at_20%_75%,rgba(16,185,129,0.08),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(52,211,153,0.07),transparent_28%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:48px_48px] opacity-30" />

@@ -45,7 +45,7 @@ export const Contact: React.FC = () => {
  
 
   return (
-    <section id="contact" className="relative py-24 px-6 max-w-7xl mx-auto">
+    <section id="contact" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       {/* Background Glow */}
       <div className="absolute bottom-0 left-[10%] w-[450px] h-[450px] radial-glow opacity-30 pointer-events-none" />
 
