@@ -8,6 +8,9 @@ import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+import JsonLd from "@/components/JsonLd";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ali-portfolio-website-dev.vercel.app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +25,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ali.dev"),
+  metadataBase: new URL(siteUrl),
 
   title: {
     default: "Muhammad Ali | Software Engineer",
@@ -31,21 +34,6 @@ export const metadata: Metadata = {
 
   description:
     "Muhammad Ali is a Software Engineer specializing in modern web applications, React Native mobile apps, immersive interfaces, and high-performance digital products.",
-
-  keywords: [
-    "Muhammad Ali",
-    "Software Engineer",
-    "Frontend Developer",
-    "React Developer",
-    "Next.js Developer",
-    "React Native Developer",
-    "Mobile App Developer",
-    "Three.js Developer",
-    "JavaScript Developer",
-    "TypeScript Developer",
-    "Freelance Software Engineer",
-    "Portfolio",
-  ],
 
   authors: [{ name: "Muhammad Ali" }],
   creator: "Muhammad Ali",
@@ -78,7 +66,6 @@ export const metadata: Metadata = {
     title: "Muhammad Ali | Software Engineer",
     description:
       "Software Engineer specializing in Next.js, React Native, modern web apps, and digital products.",
-    creator: "@ali_dev",
     images: ["/og-image.png"],
   },
 
@@ -121,6 +108,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen overflow-x-hidden bg-dark-bg text-text-primary selection:bg-emerald-accent/25 selection:text-emerald-accent">
+        <JsonLd />
         <div className="relative flex min-h-screen flex-col">
           <ScrollToTop />
           <ScrollProgress />

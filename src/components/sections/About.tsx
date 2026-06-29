@@ -15,7 +15,7 @@ export const About: React.FC = () => {
         <SectionHeading
           badge="About Me"
           title="Translating Complex Visions Into Premium Codebases"
-          subtitle="I'm a Software Engineer who enjoys building scalable applications and solving complex problems through clean, maintainable code. My experience spans full-stack development, AI integration, and real-time systems, with a strong focus on performance and user experience. I believe great software isn't just about writing code—it's about creating products that are reliable, intuitive, and deliver real value to users."
+          subtitle="I'm Muhammad Ali, a Software Engineer based in Karachi, Pakistan. With hands-on experience building production web and mobile applications, I specialize in full-stack development, AI integration, and real-time systems with a strong focus on performance and user experience. I'm available for international remote work and freelance engagements—helping teams turn complex visions into reliable, intuitive digital products."
         />
       </FadeInUp>
 
