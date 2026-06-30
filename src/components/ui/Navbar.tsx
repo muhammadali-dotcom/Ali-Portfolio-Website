@@ -51,9 +51,10 @@ export const Navbar: React.FC = () => {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+              className="relative text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 group"
             >
               {link.name}
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-emerald-accent group-hover:w-full transition-all duration-300 ease-out" />
             </a>
           ))}
         </nav>
