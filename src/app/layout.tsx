@@ -8,6 +8,7 @@ import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+import CursorGlow from "@/components/ui/CursorGlow";
 import JsonLd from "@/components/JsonLd";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ali-portfolio-website-dev.vercel.app";
@@ -28,12 +29,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: "Muhammad Ali | Software Engineer",
+    default: "Muhammad Ali | Full-Stack Software Engineer",
     template: "%s | Muhammad Ali",
   },
 
   description:
-    "Muhammad Ali is a Software Engineer specializing in modern web applications, React Native mobile apps, immersive interfaces, and high-performance digital products.",
+    "Muhammad Ali is a Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools with Next.js, Node.js, PostgreSQL, and Redis.",
 
   authors: [{ name: "Muhammad Ali" }],
   creator: "Muhammad Ali",
@@ -47,9 +48,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "Muhammad Ali | Software Engineer",
+    title: "Muhammad Ali | Full-Stack Software Engineer",
     description:
-      "Software Engineer building high-performance web applications, mobile apps, and modern digital experiences.",
+      "Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools.",
     siteName: "Muhammad Ali Portfolio",
     images: [
       {
@@ -63,9 +64,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Muhammad Ali | Software Engineer",
+    title: "Muhammad Ali | Full-Stack Software Engineer",
     description:
-      "Software Engineer specializing in Next.js, React Native, modern web apps, and digital products.",
+      "Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools with Next.js, Node.js, and PostgreSQL.",
     images: ["/og-image.png"],
   },
 
@@ -91,7 +92,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#050816",
+  themeColor: "#FFFDF7",
 };
 
 export default function RootLayout({
@@ -110,6 +111,7 @@ export default function RootLayout({
       <body className="min-h-screen overflow-x-hidden bg-dark-bg text-text-primary selection:bg-emerald-accent/25 selection:text-emerald-accent">
         <JsonLd />
         <div className="relative flex min-h-screen flex-col">
+          <CursorGlow />
           <ScrollToTop />
           <ScrollProgress />
 

@@ -4,7 +4,7 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Muhammad Ali",
-  jobTitle: "Software Engineer",
+  jobTitle: "Full-Stack Software Engineer",
   url: siteUrl,
   image: `${siteUrl}/og-image.png`,
   email: "alisaleem.as719@gmail.com",
@@ -18,18 +18,20 @@ const personSchema = {
     "https://www.linkedin.com/in/muhammad-ali-saleem-69b892245/",
   ],
   knowsAbout: [
-    "React Native",
     "Next.js",
     "TypeScript",
     "React",
     "Node.js",
-    "Three.js",
-    "Framer Motion",
+    "Express",
     "PostgreSQL",
-    "Redux Toolkit",
+    "Redis",
+    "Socket.io",
+    "REST APIs",
+    "Docker",
+    "AI Integrations",
   ],
   description:
-    "Software Engineer specializing in modern web applications, React Native mobile apps, immersive 3D interfaces, and high-performance digital products.",
+    "Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools.",
 };
 
 const websiteSchema = {
@@ -39,7 +41,7 @@ const websiteSchema = {
   url: siteUrl,
   author: { "@type": "Person", name: "Muhammad Ali" },
   description:
-    "Muhammad Ali is a Software Engineer specializing in modern web applications, React Native mobile apps, immersive interfaces, and high-performance digital products.",
+    "Muhammad Ali is a Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools.",
 };
 
 const profilePageSchema = {
@@ -48,7 +50,7 @@ const profilePageSchema = {
   mainEntity: {
     "@type": "Person",
     name: "Muhammad Ali",
-    jobTitle: "Software Engineer",
+    jobTitle: "Full-Stack Software Engineer",
   },
 };
 
@@ -61,7 +63,7 @@ const faqSchema = {
       name: "What services does Muhammad Ali offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Muhammad Ali offers web development, mobile app development (React Native), dashboard development, premium UI implementation, and API & data integration services.",
+        text: "Muhammad Ali offers full-stack web development, real-time applications, admin dashboards, AI-powered tools, API & backend systems, and React Native mobile app interfaces.",
       },
     },
     {
@@ -69,7 +71,7 @@ const faqSchema = {
       name: "Is Muhammad Ali available for freelance work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, Muhammad Ali is available for freelance and remote work. You can contact him via email at alisaleem.as719@gmail.com or book a free 15-minute call via Calendly.",
+        text: "Yes, Muhammad Ali is available for freelance and remote work. You can contact him via email at alisaleem.as719@gmail.com or book a free call via WhatsApp.",
       },
     },
     {
@@ -77,7 +79,7 @@ const faqSchema = {
       name: "What technologies does Muhammad Ali specialize in?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Muhammad Ali specializes in Next.js, React, TypeScript, React Native, Node.js, Three.js, Framer Motion, PostgreSQL, and REST APIs.",
+        text: "Muhammad Ali specializes in Next.js, React, TypeScript, Node.js, Express, PostgreSQL, Redis, Socket.io, and REST APIs.",
       },
     },
     {

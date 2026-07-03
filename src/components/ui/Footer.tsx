@@ -1,44 +1,57 @@
+"use client";
+
 import React from "react";
 import * as Icons from "lucide-react";
 import * as CustomIcons from "@/components/ui/Icons";
+import { motion } from "framer-motion";
+import FadeInUp from "@/components/animations/FadeInUp";
 import { socials } from "@/data/socials";
+import { resolveIcon } from "@/lib/utils";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-glass-border/30 bg-dark-surface/30 py-8 px-4 sm:px-6 lg:py-12">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="border-t border-border bg-bg-soft py-8 px-4 sm:px-6 lg:py-12">
+      <FadeInUp className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Logo and Copy */}
         <div className="flex flex-col items-center md:items-start gap-2">
-          <span className="text-lg font-bold text-text-primary">
-            ALI<span className="text-emerald-accent">.DEV</span>
+          <span className="text-lg font-bold text-heading">
+            ALI<span className="text-primary">.DEV</span>
           </span>
-          <p className="text-xs text-text-secondary">
-            © {new Date().getFullYear()} Ali. All rights reserved. Designed & built with Next.js.
+          <p className="text-xs text-body">
+            © {new Date().getFullYear()} Ali. All rights reserved.
           </p>
         </div>
 
         {/* Social Links */}
         <div className="flex items-center gap-4">
           {socials.map((social) => {
-            const IconComponent =
-              (Icons as any)[social.iconName] ||
-              (CustomIcons as any)[social.iconName] ||
-              Icons.Link;
+            const IconComponent = resolveIcon(
+              [Icons, CustomIcons],
+              social.iconName,
+              Icons.Link
+            );
             return (
-              <a
+              <motion.a
                 key={social.platform}
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 title={social.platform}
-                className="w-10 h-10 rounded-lg flex items-center justify-center bg-dark-surface border border-glass-border/40 hover:border-emerald-accent/50 text-text-secondary hover:text-emerald-accent hover:-translate-y-0.5 transition-all duration-200"
+                whileHover={{
+                  scale: 1.12,
+                  rotate: 6,
+                  boxShadow: "0 0 0 1px var(--color-primary), 0 8px 20px rgba(37, 99, 235, 0.25)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 350, damping: 18 }}
+                className="w-10 h-10 rounded-lg flex items-center justify-center bg-card border border-border text-body hover:text-primary"
               >
                 <IconComponent className="w-5 h-5" />
-              </a>
+              </motion.a>
             );
           })}
         </div>
-      </div>
+      </FadeInUp>
     </footer>
   );
 };

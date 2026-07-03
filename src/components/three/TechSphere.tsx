@@ -125,7 +125,7 @@ export function TechSphere() {
       <mesh ref={glowRef}>
         <sphereGeometry args={[0.95, 48, 48]} />
         <meshBasicMaterial
-          color="#10b981"
+          color="#14B8A6"
           transparent
           opacity={0.075}
           depthWrite={false}
@@ -137,9 +137,9 @@ export function TechSphere() {
       <mesh ref={coreRef}>
         <icosahedronGeometry args={[0.55, 3]} />
         <meshPhysicalMaterial
-          color="#047857"
-          emissive="#10b981"
-          emissiveIntensity={1.9}
+          color="#14B8A6"
+          emissive="#14B8A6"
+          emissiveIntensity={1.6}
           roughness={0.16}
           metalness={0.78}
           clearcoat={1}
@@ -153,7 +153,7 @@ export function TechSphere() {
       <mesh position={[0, 0, 0.08]}>
         <sphereGeometry args={[0.18, 32, 32]} />
         <meshBasicMaterial
-          color="#d1fae5"
+          color="#5EEAD4"
           transparent
           opacity={0.45}
           depthWrite={false}
@@ -165,7 +165,7 @@ export function TechSphere() {
       <mesh>
         <sphereGeometry args={[1.45, 48, 48]} />
         <meshBasicMaterial
-          color="#10b981"
+          color="#14B8A6"
           transparent
           opacity={0.035}
           depthWrite={false}
@@ -176,7 +176,7 @@ export function TechSphere() {
       <mesh>
         <sphereGeometry args={[2.52, 28, 28]} />
         <meshBasicMaterial
-          color="#34d399"
+          color="#2563EB"
           wireframe
           transparent
           opacity={0.065}
@@ -188,7 +188,7 @@ export function TechSphere() {
       <mesh>
         <sphereGeometry args={[3.12, 36, 36]} />
         <meshBasicMaterial
-          color="#10b981"
+          color="#2563EB"
           wireframe
           transparent
           opacity={0.032}
@@ -200,7 +200,7 @@ export function TechSphere() {
       <mesh ref={innerRingRef} rotation={[Math.PI / 2.75, 0.42, 0]}>
         <torusGeometry args={[2.95, 0.012, 12, 160]} />
         <meshBasicMaterial
-          color="#10b981"
+          color="#2563EB"
           transparent
           opacity={0.34}
           depthWrite={false}
@@ -212,7 +212,7 @@ export function TechSphere() {
       <mesh ref={outerRingRef} rotation={[Math.PI / 2.08, -0.72, 0.22]}>
         <torusGeometry args={[3.34, 0.01, 12, 160]} />
         <meshBasicMaterial
-          color="#34d399"
+          color="#2563EB"
           transparent
           opacity={0.2}
           depthWrite={false}
@@ -224,7 +224,7 @@ export function TechSphere() {
       <mesh ref={tiltedRingRef} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.66, 0.006, 12, 160]} />
         <meshBasicMaterial
-          color="#ecfdf5"
+          color="#F8FAFC"
           transparent
           opacity={0.13}
           depthWrite={false}
@@ -238,7 +238,7 @@ export function TechSphere() {
           <mesh key={`particle-${index}`} position={position}>
             <sphereGeometry args={[index % 3 === 0 ? 0.018 : 0.012, 12, 12]} />
             <meshBasicMaterial
-              color={index % 2 === 0 ? "#10b981" : "#a7f3d0"}
+              color={index % 2 === 0 ? "#2563EB" : "#5EEAD4"}
               transparent
               opacity={index % 2 === 0 ? 0.42 : 0.28}
               depthWrite={false}
@@ -253,7 +253,7 @@ export function TechSphere() {
         <Line
           key={`line-${techs[index]}`}
           points={[[0, 0, 0], position]}
-          color={index % 2 === 0 ? "#10b981" : "#34d399"}
+          color={index % 2 === 0 ? "#2563EB" : "#14B8A6"}
           transparent
           opacity={0.095}
           lineWidth={0.85}
@@ -268,7 +268,7 @@ export function TechSphere() {
           <Line
             key={`cross-line-${techs[index]}`}
             points={[position, spherePositions[nextIndex]]}
-            color="#10b981"
+            color="#2563EB"
             transparent
             opacity={0.035}
             lineWidth={0.55}

@@ -8,8 +8,8 @@ describe('TechBadge', () => {
   })
 
   test('renders a different tech name', () => {
-    render(<TechBadge name="Mobile App" />)
-    expect(screen.getByText('Mobile App')).toBeInTheDocument()
+    render(<TechBadge name="TypeScript" />)
+    expect(screen.getByText('TypeScript')).toBeInTheDocument()
   })
 
   test('applies custom className', () => {

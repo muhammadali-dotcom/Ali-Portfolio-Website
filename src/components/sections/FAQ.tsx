@@ -8,7 +8,7 @@ const faqs = [
   {
     question: "What services do you offer?",
     answer:
-      "I offer full-stack web development, React Native mobile app development, interactive dashboard builds, and premium UI implementation. I also handle API design and third-party data integrations to deliver end-to-end digital products.",
+      "I build full-stack web apps, real-time applications, admin dashboards, and AI-powered tools. I also handle API & backend systems and React Native mobile interfaces to deliver end-to-end products.",
   },
   {
     question: "Are you available for freelance or remote work?",
@@ -18,12 +18,12 @@ const faqs = [
   {
     question: "What technologies do you specialize in?",
     answer:
-      "My core stack includes Next.js, React, TypeScript, and React Native for cross-platform apps. I also work with Node.js, PostgreSQL, Three.js for 3D interfaces, Framer Motion for animations, and Redux Toolkit for state management.",
+      "My core stack includes Next.js, React, TypeScript, Node.js, and Express, with PostgreSQL and Redis for data, Socket.io for real-time features, and AI integrations for intelligent tools.",
   },
   {
     question: "How can I get in touch?",
     answer:
-      "Use the contact form below or send a direct email to alisaleem.as719@gmail.com. For a quick sync, you can also book a free 15-minute call via Calendly. I typically respond within 24 hours.",
+      "Use the contact form below or send a direct email to alisaleem.as719@gmail.com. For a quick sync, you can also book a free call via WhatsApp. I typically respond within 24 hours.",
   },
 ];
 
@@ -44,8 +44,8 @@ export const FAQ: React.FC = () => {
         {faqs.map(({ question, answer }) => (
           <StaggerItem key={question}>
             <GlassCard className="h-full">
-              <h3 className="text-base font-bold text-emerald-accent mb-3">{question}</h3>
-              <p className="text-sm text-text-secondary leading-relaxed">{answer}</p>
+              <h3 className="text-base font-bold text-primary mb-3">{question}</h3>
+              <p className="text-sm text-body leading-relaxed">{answer}</p>
             </GlassCard>
           </StaggerItem>
         ))}

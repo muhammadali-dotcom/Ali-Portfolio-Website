@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import {
   motion,
+  useReducedMotion,
   type HTMLMotionProps,
   type Variants,
 } from "framer-motion";
@@ -36,6 +37,8 @@ export default function StaggerChildren({
   className,
   ...props
 }: StaggerChildrenProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
       variants={containerVariants}
@@ -47,8 +50,8 @@ export default function StaggerChildren({
         margin: "0px 0px -70px 0px",
       }}
       transition={{
-        staggerChildren: staggerDelay,
-        delayChildren: delay,
+        staggerChildren: prefersReducedMotion ? 0 : staggerDelay,
+        delayChildren: prefersReducedMotion ? 0 : delay,
       }}
       className={className}
       {...props}
@@ -64,18 +67,20 @@ export function StaggerItem({
   className,
   ...props
 }: StaggerItemProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   const itemVariants: Variants = {
     hidden: {
       opacity: 0,
-      y: distance,
-      filter: "blur(4px)",
+      y: prefersReducedMotion ? 0 : distance,
+      filter: prefersReducedMotion ? "blur(0px)" : "blur(4px)",
     },
     show: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
       transition: {
-        duration: 0.55,
+        duration: prefersReducedMotion ? 0.01 : 0.55,
         ease: [0.22, 1, 0.36, 1],
       },
     },

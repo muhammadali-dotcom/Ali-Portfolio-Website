@@ -2,22 +2,26 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import MagneticButton from "./MagneticButton";
 
 const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
+  { name: "Work", href: "#projects" },
   { name: "Services", href: "#services" },
+  { name: "Stack", href: "#skills" },
   { name: "Experience", href: "#experience" },
+  { name: "FAQ", href: "#faq" },
   { name: "Contact", href: "#contact" },
 ];
+
+const sectionIds = navLinks.map((link) => link.href.slice(1));
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,33 +34,69 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-300",
         isScrolled
-          ? "bg-dark-bg/80 border-b border-glass-border/30 backdrop-blur-md py-4"
+          ? "bg-white/80 border-b border-border backdrop-blur-md py-4"
           : "bg-transparent py-6"
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="#hero" className="text-xl font-bold tracking-tight text-text-primary hover:text-emerald-accent transition-colors duration-200">
-          ALI<span className="text-emerald-accent">.DEV</span>
+        <a href="#hero" className="text-xl font-bold tracking-tight text-heading hover:text-primary transition-colors duration-200">
+          ALI<span className="text-primary">.DEV</span>
         </a>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="relative text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 group"
-            >
-              {link.name}
-              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-emerald-accent group-hover:w-full transition-all duration-300 ease-out" />
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href.slice(1);
+            return (
+              <a
+                key={link.name}
+                href={link.href}
+                className={cn(
+                  "relative text-sm font-medium transition-colors duration-200 group",
+                  isActive ? "text-heading" : "text-body hover:text-heading"
+                )}
+              >
+                {link.name}
+                {isActive ? (
+                  <motion.span
+                    layoutId="nav-active-indicator"
+                    className="absolute -bottom-0.5 left-0 h-px w-full bg-primary"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                ) : (
+                  <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-primary group-hover:w-full transition-all duration-300 ease-out" />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         {/* CTA Button */}
@@ -71,7 +111,7 @@ export const Navbar: React.FC = () => {
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Let's Talk
+              Let&apos;s Talk
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
             </Button>
           </MagneticButton>
@@ -80,7 +120,7 @@ export const Navbar: React.FC = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-text-primary hover:text-emerald-accent p-1.5 focus:outline-none cursor-pointer"
+          className="md:hidden text-heading hover:text-primary p-1.5 focus:outline-none cursor-pointer"
           aria-label="Toggle navigation menu"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -88,50 +128,60 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Drawer */}
-      <div
-        className={cn(
-          "fixed inset-y-0 right-0 w-full sm:max-w-xs bg-dark-surface/95 border-l border-glass-border/40 backdrop-blur-xl z-50 p-8 flex flex-col justify-between transition-transform duration-300 md:hidden",
-          isOpen ? "translate-x-0" : "translate-x-full"
-        )}
-      >
-        <div className="flex flex-col">
-          <div className="flex justify-between items-center mb-12">
-            <span className="text-xl font-bold text-text-primary">Navigation</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-text-primary hover:text-emerald-accent p-1 cursor-pointer"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 32 }}
+            className="fixed inset-y-0 right-0 w-full sm:max-w-xs bg-white/95 border-l border-border backdrop-blur-xl z-50 p-8 flex flex-col justify-between md:hidden"
+          >
+            <div className="flex flex-col">
+              <div className="flex justify-between items-center mb-12">
+                <span className="text-xl font-bold text-heading">Navigation</span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-heading hover:text-primary p-1 cursor-pointer"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <nav className="flex flex-col gap-6">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "text-lg font-medium transition-colors duration-200 border-b border-border pb-2",
+                      activeSection === link.href.slice(1)
+                        ? "text-primary"
+                        : "text-body hover:text-heading"
+                    )}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            <Button
+              variant="primary"
+              className="w-full flex items-center justify-center gap-1.5 mt-8"
+              onClick={() => {
+                setIsOpen(false);
+                const element = document.getElementById("contact");
+                element?.scrollIntoView({ behavior: "smooth" });
+              }}
             >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-
-          <nav className="flex flex-col gap-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="text-lg font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 border-b border-glass-border/10 pb-2"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
-        </div>
-
-        <Button
-          variant="primary"
-          className="w-full flex items-center justify-center gap-1.5 mt-8"
-          onClick={() => {
-            setIsOpen(false);
-            const element = document.getElementById("contact");
-            element?.scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          Book a Free Call
-          <ArrowUpRight className="w-4 h-4" />
-        </Button>
-      </div>
+              Book a Free Call
+              <ArrowUpRight className="w-4 h-4" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

@@ -2,6 +2,7 @@
 
 import {
   motion,
+  useReducedMotion,
   type HTMLMotionProps,
   type Variants,
 } from "framer-motion";
@@ -22,6 +23,7 @@ export default function TextReveal({
   ...props
 }: TextRevealProps) {
   const words = text.trim().split(/\s+/);
+  const prefersReducedMotion = useReducedMotion();
 
   const containerVariants: Variants = {
     hidden: {
@@ -30,8 +32,8 @@ export default function TextReveal({
     visible: {
       opacity: 1,
       transition: {
-        delayChildren: delay,
-        staggerChildren: staggerDelay,
+        delayChildren: prefersReducedMotion ? 0 : delay,
+        staggerChildren: prefersReducedMotion ? 0 : staggerDelay,
       },
     },
   };
@@ -39,15 +41,15 @@ export default function TextReveal({
   const wordVariants: Variants = {
     hidden: {
       opacity: 0,
-      y: 14,
-      filter: "blur(4px)",
+      y: prefersReducedMotion ? 0 : 14,
+      filter: prefersReducedMotion ? "blur(0px)" : "blur(4px)",
     },
     visible: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
       transition: {
-        duration,
+        duration: prefersReducedMotion ? 0.01 : duration,
         ease: [0.22, 1, 0.36, 1],
       },
     },

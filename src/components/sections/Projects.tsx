@@ -13,9 +13,9 @@ export const Projects: React.FC = () => {
 
       <FadeInUp>
         <SectionHeading
-          badge="Work"
-          title="Recent Projects"
-          subtitle="A curated selection of applications and frontend engineering designs that demonstrate standard coding practices."
+          badge="Featured Work"
+          title="Projects Built to Solve Real Problems"
+          subtitle="Case studies from full-stack web apps, real-time systems, and AI-powered tools — each one built to production standards, not just to look good in a demo."
         />
       </FadeInUp>
 

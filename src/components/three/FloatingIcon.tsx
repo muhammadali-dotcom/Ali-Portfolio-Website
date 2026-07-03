@@ -26,6 +26,12 @@ export default function FloatingIcon({
 
   const randomOffset = useMemo(() => Math.random() * Math.PI * 2, []);
 
+  // Exactly one node (the first) gets the coral accent treatment; the rest
+  // use the teal/blue pairing.
+  const isAccentNode = index === 0;
+  const accentColor = isAccentNode ? "#F97316" : "#14B8A6";
+  const accentHighlight = isAccentNode ? "#FDBA74" : "#5EEAD4";
+
   const labelWidth = useMemo(() => {
     return Math.max(0.78, text.length * 0.105 + 0.38);
   }, [text]);
@@ -99,7 +105,7 @@ export default function FloatingIcon({
       <mesh ref={glowRef}>
         <sphereGeometry args={[0.34, 32, 32]} />
         <meshBasicMaterial
-          color="#10b981"
+          color={accentColor}
           transparent
           opacity={hovered ? 0.18 : 0.075}
           depthWrite={false}
@@ -111,7 +117,7 @@ export default function FloatingIcon({
       <mesh>
         <sphereGeometry args={[0.24, 32, 32]} />
         <meshBasicMaterial
-          color="#34d399"
+          color={accentHighlight}
           transparent
           opacity={hovered ? 0.16 : 0.065}
           depthWrite={false}
@@ -123,9 +129,9 @@ export default function FloatingIcon({
       <mesh ref={coreRef}>
         <icosahedronGeometry args={[hovered ? 0.2 : 0.17, 2]} />
         <meshPhysicalMaterial
-          color={hovered ? "#34d399" : "#047857"}
-          emissive={hovered ? "#34d399" : "#10b981"}
-          emissiveIntensity={hovered ? 2.6 : 1.25}
+          color={hovered ? accentHighlight : accentColor}
+          emissive={hovered ? accentHighlight : accentColor}
+          emissiveIntensity={hovered ? 2.3 : 1.1}
           roughness={0.18}
           metalness={0.72}
           clearcoat={1}
@@ -139,7 +145,7 @@ export default function FloatingIcon({
       <mesh position={[0, 0, 0.012]}>
         <sphereGeometry args={[0.065, 24, 24]} />
         <meshBasicMaterial
-          color="#d1fae5"
+          color="#F8FAFC"
           transparent
           opacity={hovered ? 0.9 : 0.55}
           depthWrite={false}
@@ -151,7 +157,7 @@ export default function FloatingIcon({
       <mesh ref={outerRingRef} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[hovered ? 0.33 : 0.28, 0.01, 12, 72]} />
         <meshBasicMaterial
-          color={hovered ? "#a7f3d0" : "#10b981"}
+          color={hovered ? accentHighlight : "#2563EB"}
           transparent
           opacity={hovered ? 0.9 : 0.42}
           depthWrite={false}
@@ -163,7 +169,7 @@ export default function FloatingIcon({
       <mesh ref={innerRingRef} rotation={[Math.PI / 2, 0, Math.PI / 4]}>
         <torusGeometry args={[hovered ? 0.245 : 0.215, 0.006, 8, 64]} />
         <meshBasicMaterial
-          color="#34d399"
+          color="#2563EB"
           transparent
           opacity={hovered ? 0.72 : 0.28}
           depthWrite={false}
@@ -175,7 +181,7 @@ export default function FloatingIcon({
       <mesh position={[0, -0.46, -0.012]}>
         <planeGeometry args={[labelWidth, 0.32]} />
         <meshBasicMaterial
-          color="#020403"
+          color="#0F172A"
           transparent
           opacity={hovered ? 0.82 : 0.58}
           depthWrite={false}
@@ -186,7 +192,7 @@ export default function FloatingIcon({
       <mesh position={[0, -0.46, -0.008]}>
         <planeGeometry args={[labelWidth + 0.035, 0.355]} />
         <meshBasicMaterial
-          color="#10b981"
+          color={accentColor}
           transparent
           opacity={hovered ? 0.16 : 0.075}
           depthWrite={false}
@@ -197,12 +203,12 @@ export default function FloatingIcon({
       <Text
         position={[0, -0.46, 0.01]}
         fontSize={hovered ? 0.2 : 0.175}
-        color={hovered ? "#ecfdf5" : "#a7f3d0"}
+        color={hovered ? "#F8FAFC" : accentHighlight}
         anchorX="center"
         anchorY="middle"
         font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf"
         outlineWidth={0.0035}
-        outlineColor="#020403"
+        outlineColor="#0F172A"
       >
         {text}
       </Text>

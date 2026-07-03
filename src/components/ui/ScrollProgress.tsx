@@ -9,7 +9,7 @@ export const ScrollProgress: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 w-full h-[3px] bg-transparent z-[9999] pointer-events-none">
       <div
-        className="h-full bg-emerald-accent shadow-[0_0_8px_#10b981] transition-all duration-75 ease-out"
+        className="h-full bg-primary shadow-[0_0_8px_rgba(37,99,235,0.5)] transition-all duration-75 ease-out"
         style={{ width: `${completion}%` }}
       />
     </div>

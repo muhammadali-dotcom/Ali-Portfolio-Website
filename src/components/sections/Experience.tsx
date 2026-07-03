@@ -1,8 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import SectionHeading from "../ui/SectionHeading";
 import GlassCard from "../ui/GlassCard";
 import FadeInUp from "../animations/FadeInUp";
-import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { Briefcase, MapPin } from "lucide-react";
 
 const experience = [
@@ -48,6 +50,16 @@ const experience = [
 ];
 
 export const Experience: React.FC = () => {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 0.8", "end 0.6"],
+  });
+
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
   return (
     <section id="experience" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 lg:py-24">
       <div className="pointer-events-none absolute left-[20%] top-[40%] h-[380px] w-[380px] radial-glow opacity-25" />
@@ -61,61 +73,86 @@ export const Experience: React.FC = () => {
         />
       </FadeInUp>
 
-      <div className="relative mt-10 border-l-2 border-glass-border pl-8 md:ml-44 md:mt-16 md:pl-20">
-        <StaggerChildren className="space-y-14">
-          {experience.map((exp) => (
-            <StaggerItem key={exp.id} className="relative">
-              <div className="hidden md:block absolute -left-[320px] top-2 w-44 text-right text-sm font-bold text-emerald-accent">
-                {exp.duration}
-              </div>
+      <div ref={timelineRef} className="relative mt-10 pl-8 md:ml-44 md:mt-16 md:pl-20">
+        {/* Static track */}
+        <div className="absolute left-0 top-0 h-full w-[2px] bg-border" />
+        {/* Animated fill that grows as you scroll */}
+        <motion.div
+          className="absolute left-0 top-0 w-[2px] origin-top bg-primary"
+          style={{ height: lineHeight }}
+        />
 
-              <div className="absolute -left-[14px] md:-left-[94px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-emerald-accent bg-dark-bg shadow-[0_0_18px_rgba(16,185,129,0.75)]">
-                <Briefcase className="h-3.5 w-3.5 text-emerald-accent" />
-              </div>
+        <div className="space-y-14">
+          {experience.map((exp, index) => {
+            const fromSide = index % 2 === 0 ? -32 : 32;
 
-              <GlassCard className="transition-all duration-300 hover:border-emerald-accent/20">
-                <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-start">
-                  <div>
-                    <h3 className="text-xl font-bold text-text-primary">
-                      {exp.role}
-                    </h3>
-
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-semibold text-emerald-accent/90">
-                        {exp.company}
-                      </span>
-
-                      <span className="rounded-full border border-emerald-accent/20 bg-emerald-accent/10 px-2 py-0.5 text-xs text-emerald-accent">
-                        {exp.type}
-                      </span>
-                    </div>
-
-                    <div className="mt-2 flex items-center gap-1.5 text-xs text-text-secondary">
-                      <MapPin className="h-3.5 w-3.5" />
-                      <span>{exp.location}</span>
-                    </div>
-                  </div>
-
-                  <span className="md:hidden text-xs font-bold uppercase tracking-wider text-emerald-accent">
-                    {exp.duration}
-                  </span>
+            return (
+              <motion.div
+                key={exp.id}
+                className="relative"
+                initial={{
+                  opacity: 0,
+                  x: prefersReducedMotion ? 0 : fromSide,
+                }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3, margin: "0px 0px -80px 0px" }}
+                transition={{
+                  duration: prefersReducedMotion ? 0.01 : 0.6,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <div className="hidden md:block absolute -left-[320px] top-2 w-44 text-right text-sm font-bold text-primary">
+                  {exp.duration}
                 </div>
 
-                <ul className="space-y-3">
-                  {exp.achievements.map((item, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-start gap-2.5 text-sm leading-relaxed text-text-secondary"
-                    >
-                      <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-accent" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </GlassCard>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
+                <div className="absolute -left-[14px] md:-left-[94px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-primary bg-bg shadow-[0_0_0_4px_rgba(37,99,235,0.12)]">
+                  <Briefcase className="h-3.5 w-3.5 text-primary" />
+                </div>
+
+                <GlassCard className="transition-all duration-300 hover:border-primary/20">
+                  <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-start">
+                    <div>
+                      <h3 className="text-xl font-bold text-heading">
+                        {exp.role}
+                      </h3>
+
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold text-primary/90">
+                          {exp.company}
+                        </span>
+
+                        <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                          {exp.type}
+                        </span>
+                      </div>
+
+                      <div className="mt-2 flex items-center gap-1.5 text-xs text-body">
+                        <MapPin className="h-3.5 w-3.5" />
+                        <span>{exp.location}</span>
+                      </div>
+                    </div>
+
+                    <span className="md:hidden text-xs font-bold uppercase tracking-wider text-primary">
+                      {exp.duration}
+                    </span>
+                  </div>
+
+                  <ul className="space-y-3">
+                    {exp.achievements.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-2.5 text-sm leading-relaxed text-body"
+                      >
+                        <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </GlassCard>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

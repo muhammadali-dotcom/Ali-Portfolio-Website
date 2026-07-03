@@ -1,28 +1,66 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type NativeButtonProps = Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onAnimationStart" | "onAnimationEnd" | "onDrag" | "onDragStart" | "onDragEnd"
+>;
+
+interface ButtonProps extends NativeButtonProps {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
 }
 
+interface Ripple {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+}
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
+  ({ className, variant = "primary", size = "md", children, onClick, ...props }, ref) => {
+    const [ripples, setRipples] = useState<Ripple[]>([]);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      const button = e.currentTarget;
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 1.6;
+      const ripple: Ripple = {
+        id: Date.now(),
+        x: e.clientX - rect.left - size / 2,
+        y: e.clientY - rect.top - size / 2,
+        size,
+      };
+      setRipples((prev) => [...prev, ripple]);
+      window.setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== ripple.id));
+      }, 600);
+
+      onClick?.(e);
+    };
+
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileTap={{ scale: 0.96 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        onClick={handleClick}
         className={cn(
-          "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 active:scale-95 cursor-pointer disabled:opacity-50 disabled:pointer-events-none",
+          "relative inline-flex items-center justify-center overflow-hidden font-medium rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:pointer-events-none",
           // Variants
           {
-            "bg-emerald-accent text-dark-bg hover:bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]":
+            "bg-primary text-white hover:bg-primary-hover shadow-[0_4px_12px_rgba(37,99,235,0.25)] hover:shadow-[0_6px_18px_rgba(37,99,235,0.35)]":
               variant === "primary",
-            "bg-emerald-accent-dim/20 text-emerald-accent border border-emerald-accent-dim/30 hover:bg-emerald-accent-dim/30":
+            "bg-white text-primary border border-[#BFDBFE] hover:bg-[#EFF6FF]":
               variant === "secondary",
-            "border border-glass-border hover:border-emerald-accent/50 text-text-primary hover:text-emerald-accent bg-transparent":
+            "border border-border hover:border-primary/50 text-heading hover:text-primary bg-transparent":
               variant === "outline",
-            "text-text-secondary hover:text-text-primary bg-transparent hover:bg-white/5":
+            "text-body hover:text-heading bg-transparent hover:bg-black/[0.03]":
               variant === "ghost",
           },
           // Sizes
@@ -36,7 +74,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {children}
-      </button>
+
+        {ripples.map((ripple) => (
+          <span
+            key={ripple.id}
+            aria-hidden="true"
+            className="pointer-events-none absolute rounded-full bg-current opacity-25 animate-[ripple_0.6s_ease-out]"
+            style={{
+              left: ripple.x,
+              top: ripple.y,
+              width: ripple.size,
+              height: ripple.size,
+            }}
+          />
+        ))}
+      </motion.button>
     );
   }
 );

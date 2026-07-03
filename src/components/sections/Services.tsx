@@ -13,9 +13,9 @@ export const Services: React.FC = () => {
 
       <FadeInUp>
         <SectionHeading
-          badge="Services"
-          title="How I Can Help You"
-          subtitle="Offering tailored development services designed to convert visitors into clients and ship high-quality products."
+          badge="What I Build"
+          title="Software Built Around Your Business"
+          subtitle="Outcome-focused engineering — from business platforms and real-time systems to AI tools and the APIs that power them."
         />
       </FadeInUp>
 

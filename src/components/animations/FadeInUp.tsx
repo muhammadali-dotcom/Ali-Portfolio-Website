@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 
 interface FadeInUpProps extends HTMLMotionProps<"div"> {
   children: ReactNode;
@@ -20,9 +20,12 @@ export default function FadeInUp({
   className,
   ...props
 }: FadeInUpProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const offset = prefersReducedMotion ? 0 : distance;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: distance }}
+      initial={{ opacity: 0, y: offset }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{
         once,
@@ -30,8 +33,8 @@ export default function FadeInUp({
         margin: "0px 0px -80px 0px",
       }}
       transition={{
-        duration,
-        delay,
+        duration: prefersReducedMotion ? 0.01 : duration,
+        delay: prefersReducedMotion ? 0 : delay,
         ease: [0.22, 1, 0.36, 1],
       }}
       className={className}
