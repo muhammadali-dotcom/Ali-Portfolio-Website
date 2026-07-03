@@ -11,7 +11,10 @@ import { resolveIcon } from "@/lib/utils";
 export const Footer: React.FC = () => {
   return (
     <footer className="border-t border-border bg-bg-soft py-8 px-4 sm:px-6 lg:py-12">
-      <FadeInUp className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <FadeInUp
+        className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
+        viewport={{ once: true, amount: 0 }}
+      >
         {/* Logo and Copy */}
         <div className="flex flex-col items-center md:items-start gap-2">
           <span className="text-lg font-bold text-heading">
