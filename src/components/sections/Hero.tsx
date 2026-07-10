@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { ArrowDown, Code2, Brain, Trophy, Lightbulb } from "lucide-react";
+import { ArrowDown, Code2, Brain, Trophy, Lightbulb, FileText } from "lucide-react";
 
 import Button from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
+import ResumeModal from "../ui/ResumeModal";
 import TypingRoles from "../animations/TypingRoles";
 import BlurRevealText from "../animations/BlurRevealText";
 import FadeInUp from "../animations/FadeInUp";
@@ -48,6 +50,7 @@ const trustBadges = [
 export default function Hero() {
   const { x: sphereX, y: sphereY } = useMouseParallax(18);
   const { x: headingX, y: headingY } = useMouseParallax(-6);
+  const [resumeOpen, setResumeOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -111,24 +114,35 @@ export default function Hero() {
             </p>
           </FadeInUp>
 
-          <FadeInUp delay={0.75} className="flex flex-col gap-4 sm:flex-row">
-            <MagneticButton range={70} strength={0.25}>
+          <FadeInUp delay={0.75} className="flex flex-wrap items-center gap-3">
+            <MagneticButton range={60} strength={0.2}>
               <Button
                 variant="primary"
-                size="lg"
+                size="sm"
                 onClick={() => scrollToSection("projects")}
               >
                 View My Work
               </Button>
             </MagneticButton>
 
-            <MagneticButton range={70} strength={0.25}>
+            <MagneticButton range={60} strength={0.2}>
               <Button
                 variant="outline"
-                size="lg"
+                size="sm"
                 onClick={() => scrollToSection("contact")}
               >
                 Let&apos;s Build Something
+              </Button>
+            </MagneticButton>
+
+            <MagneticButton range={60} strength={0.2}>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setResumeOpen(true)}
+              >
+                <FileText className="mr-1.5 h-3.5 w-3.5" />
+                View Resume
               </Button>
             </MagneticButton>
           </FadeInUp>
@@ -174,6 +188,8 @@ export default function Hero() {
           <ArrowDown className="h-4 w-4 animate-bounce" />
         </button>
       </div>
+
+      <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </section>
   );
 }
