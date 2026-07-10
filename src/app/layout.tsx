@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Muhammad Ali is a Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools with Next.js, Node.js, PostgreSQL, and Redis.",
+    "Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools with Next.js, Node.js, PostgreSQL, and Redis.",
 
   authors: [{ name: "Muhammad Ali" }],
   creator: "Muhammad Ali",

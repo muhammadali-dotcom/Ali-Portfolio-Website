@@ -22,7 +22,7 @@ export const projects: Project[] = [
     image: "/EMS.png",
     github: "https://github.com/muhammadali-dotcom/Employee_Management.git",
     live: null,
-    status: "Case Study Coming Soon",
+    status: "Personal Project",
     featured: true,
   },
   {
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     image: "/QueryBridge.png",
     github: "https://github.com/muhammadali-dotcom/QueryBridge.git",
     live: null,
-    status: "Case Study Coming Soon",
+    status: "Personal Project",
   },
   {
     id: "project-3",
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     image: "/RoomTalk.png",
     github: "https://github.com/muhammadali-dotcom/RoomTalk",
     live: null,
-    status: "Case Study Coming Soon",
+    status: "Personal Project",
   },
   {
     id: "project-4",

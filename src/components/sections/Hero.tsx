@@ -74,9 +74,13 @@ export default function Hero() {
               AI-powered tools that solve real business problems.
             </p>
             <p className="mb-8 max-w-xl text-base leading-relaxed text-body lg:text-lg">
-              From booking platforms and employee management systems to
-              real-time chat apps and intelligent dashboards, I turn ideas
-              into clean, scalable, production-ready software.
+              I specialize in transforming complex ideas into elegant, well-engineered solutions. Whether it's frontend interfaces, backend systems, or full-stack applications, I deliver code that's not just functional, but a pleasure to maintain.
+            </p>
+          </FadeInUp>
+
+          <FadeInUp delay={0.68}>
+            <p className="mb-8 max-w-xl text-sm leading-relaxed text-body lg:text-base">
+              I combine technical expertise with a genuine passion for problem-solving. Over the years, I&apos;ve worked on diverse projects across web and mobile platforms, always focusing on writing maintainable code and delivering solutions that create real impact.
             </p>
           </FadeInUp>
 

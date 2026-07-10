@@ -1,4 +1,12 @@
+import { socials } from "@/data/socials";
+import { faqs } from "@/data/faq";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ali-portfolio-website-dev.vercel.app";
+
+// Extract GitHub and LinkedIn from socials data for single source of truth
+const sameAsLinks = socials
+  .filter((social) => social.platform === "GitHub" || social.platform === "LinkedIn")
+  .map((social) => social.url);
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -13,10 +21,7 @@ const personSchema = {
     addressLocality: "Karachi",
     addressCountry: "PK",
   },
-  sameAs: [
-    "https://github.com/muhammadali-dotcom",
-    "https://www.linkedin.com/in/muhammad-ali-saleem-69b892245/",
-  ],
+  sameAs: sameAsLinks,
   knowsAbout: [
     "Next.js",
     "TypeScript",
@@ -57,40 +62,14 @@ const profilePageSchema = {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What services does Muhammad Ali offer?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Muhammad Ali offers full-stack web development, real-time applications, admin dashboards, AI-powered tools, API & backend systems, and React Native mobile app interfaces.",
-      },
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
     },
-    {
-      "@type": "Question",
-      name: "Is Muhammad Ali available for freelance work?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, Muhammad Ali is available for freelance and remote work. You can contact him via email at alisaleem.as719@gmail.com or book a free call via WhatsApp.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What technologies does Muhammad Ali specialize in?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Muhammad Ali specializes in Next.js, React, TypeScript, Node.js, Express, PostgreSQL, Redis, Socket.io, and REST APIs.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Where is Muhammad Ali based?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Muhammad Ali is based in Karachi, Pakistan and is available for remote work globally.",
-      },
-    },
-  ],
+  })),
 };
 
 export default function JsonLd() {
