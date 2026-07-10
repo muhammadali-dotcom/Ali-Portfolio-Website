@@ -24,7 +24,8 @@ export default function FloatingIcon({
 
   const [hovered, setHovered] = useState(false);
 
-  const randomOffset = useMemo(() => Math.random() * Math.PI * 2, []);
+  // Deterministic per-item phase offset (avoids impure Math.random during render).
+  const randomOffset = useMemo(() => (index * 2.399963) % (Math.PI * 2), [index]);
 
   // Exactly one node (the first) gets the coral accent treatment; the rest
   // use the teal/blue pairing.

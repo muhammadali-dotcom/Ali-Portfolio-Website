@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { X, ExternalLink } from "lucide-react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
 import { Github } from "@/components/ui/Icons";
 import { Project } from "@/types";
 import GlassCard from "./GlassCard";
@@ -65,11 +72,40 @@ const ProjectDetails: React.FC<{ project: Project }> = ({ project }) => {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const { title, description, image, github, live, status, featured } = project;
-  const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
+  const [imageError, setImageError] = React.useState(false);
   const closeTimeout = React.useRef<number | null>(null);
+
+  const prefersReducedMotion = useReducedMotion();
+  const tiltRef = useRef<HTMLDivElement>(null);
+  const pointerX = useMotionValue(0.5);
+  const pointerY = useMotionValue(0.5);
+  const springConfig = { stiffness: 220, damping: 22, mass: 0.4 };
+  const rotateX = useSpring(
+    useTransform(pointerY, [0, 1], [6, -6]),
+    springConfig
+  );
+  const rotateY = useSpring(
+    useTransform(pointerX, [0, 1], [-6, 6]),
+    springConfig
+  );
+  const glowX = useTransform(pointerX, (v) => `${v * 100}%`);
+  const glowY = useTransform(pointerY, (v) => `${v * 100}%`);
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion) return;
+    const el = tiltRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    pointerX.set((e.clientX - rect.left) / rect.width);
+    pointerY.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handlePointerLeave = () => {
+    pointerX.set(0.5);
+    pointerY.set(0.5);
+  };
 
   const openModal = () => {
     if (closeTimeout.current) {
@@ -78,105 +114,145 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
     setMounted(true);
     requestAnimationFrame(() => setVisible(true));
-    setOpen(true);
   };
 
   const closeModal = () => {
     setVisible(false);
     closeTimeout.current = window.setTimeout(() => {
       setMounted(false);
-      setOpen(false);
       closeTimeout.current = null;
     }, 220);
   };
 
   return (
     <>
-      <GlassCard
-        className={`group flex cursor-pointer flex-col h-full ${
-          featured ? "md:col-span-2 md:flex-row gap-6 items-stretch" : "col-span-1"
-        }`}
-        onClick={openModal}
+      <motion.div
+        ref={tiltRef}
+        data-cursor="card"
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        style={{
+          rotateX: prefersReducedMotion ? 0 : rotateX,
+          rotateY: prefersReducedMotion ? 0 : rotateY,
+          transformStyle: "preserve-3d",
+          transformPerspective: 1000,
+        }}
+        className="relative h-full"
       >
-        {/* Project Image Container */}
-        <div
-          className={`relative overflow-hidden rounded-xl border border-border aspect-video w-full bg-bg-soft ${
-            featured ? "md:w-2/5 md:aspect-auto" : ""
+        {/* Animated gradient border glow, follows cursor */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: useTransform(
+              [glowX, glowY],
+              ([gx, gy]: (string | number)[]) =>
+                `radial-gradient(240px circle at ${gx} ${gy}, var(--color-glow-primary), transparent 70%)`
+            ),
+          }}
+        />
+
+        <GlassCard
+          className={`group relative flex cursor-pointer flex-col h-full ${
+            featured ? "md:col-span-2 md:flex-row gap-6 items-stretch" : "col-span-1"
           }`}
+          onClick={openModal}
         >
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+          {/* Cursor-follow gradient overlay */}
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{
+              background: useTransform(
+                [glowX, glowY],
+                ([gx, gy]: (string | number)[]) =>
+                  `radial-gradient(320px circle at ${gx} ${gy}, var(--color-glow-primary), transparent 65%)`
+              ),
+            }}
+          />
 
-          <div className="absolute inset-0 flex items-center justify-center font-bold text-primary/15 text-3xl select-none uppercase tracking-widest group-hover:scale-110 transition-transform duration-500">
-            {title.slice(0, 3)}
-          </div>
+          {/* Project Image Container */}
+          <div
+            className={`relative overflow-hidden rounded-xl border border-border aspect-video w-full bg-bg-soft ${
+              featured ? "md:w-2/5 md:aspect-auto" : ""
+            }`}
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/15 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
-          <div className="w-full h-full relative opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
-            {image && !imageError ? (
-              <Image
-                src={image}
-                alt={`${title} screenshot`}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className={featured ? "object-cover" : "object-contain p-4"}
-                onError={() => setImageError(true)}
-              />
-            ) : (
-              <div className="w-full h-full bg-bg-soft flex items-center justify-center text-xs text-body">
-                <span className="text-primary/70 font-semibold">{title} Preview</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Project Text Details */}
-        <div className={`flex flex-col flex-1 justify-between mt-4 ${featured ? "md:mt-0 md:w-3/5" : ""}`}>
-          <div>
-            <div className="mb-2 flex items-start justify-between gap-3">
-              <h3 className="text-xl font-bold text-heading group-hover:text-primary transition-colors duration-300">
-                {title}
-              </h3>
+            <div className="absolute inset-0 flex items-center justify-center font-bold text-primary/15 text-3xl select-none uppercase tracking-widest group-hover:scale-110 transition-transform duration-500">
+              {title.slice(0, 3)}
             </div>
-            <p className="text-sm text-body line-clamp-3 leading-relaxed">
-              {description}
-            </p>
-          </div>
 
-          <div className="mt-6">
-            <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
-              <StatusBadge status={status} />
-              <div className="flex items-center gap-4">
-                {live && (
-                  <a
-                    href={live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-body hover:text-heading transition-colors duration-200"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Live
-                  </a>
-                )}
-                {github && (
-                  <a
-                    href={github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-body hover:text-heading transition-colors duration-200"
-                  >
-                    <Github className="w-4 h-4" />
-                    Code
-                  </a>
-                )}
-                <span className="text-sm font-semibold text-primary">
-                  Case Study
-                </span>
-              </div>
+            <div className="w-full h-full relative opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+              {image && !imageError ? (
+                <Image
+                  src={image}
+                  alt={`${title} screenshot`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className={featured ? "object-cover" : "object-contain p-4"}
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="w-full h-full bg-bg-soft flex items-center justify-center text-xs text-body">
+                  <span className="text-primary/70 font-semibold">{title} Preview</span>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </GlassCard>
+
+          {/* Project Text Details */}
+          <div className={`relative z-10 flex flex-col flex-1 justify-between mt-4 ${featured ? "md:mt-0 md:w-3/5" : ""}`}>
+            <div>
+              <div className="mb-2 flex items-start justify-between gap-3">
+                <h3 className="text-xl font-bold text-heading group-hover:text-primary transition-colors duration-300">
+                  {title}
+                </h3>
+              </div>
+              <p className="text-sm text-body line-clamp-3 leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            <div className="mt-6">
+              <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
+                <StatusBadge status={status} />
+                <div className="flex items-center gap-4">
+                  {live && (
+                    <a
+                      href={live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-cursor="link"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-body hover:text-heading transition-colors duration-200"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Live
+                    </a>
+                  )}
+                  {github && (
+                    <a
+                      href={github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-cursor="link"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-body hover:text-heading transition-colors duration-200"
+                    >
+                      <Github className="w-4 h-4" />
+                      Code
+                    </a>
+                  )}
+                  <span className="text-sm font-semibold text-primary">
+                    Case Study
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </GlassCard>
+      </motion.div>
 
       {/* Modal */}
       {mounted && (

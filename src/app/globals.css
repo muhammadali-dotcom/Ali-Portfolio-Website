@@ -5,34 +5,36 @@
 ───────────────────────────────────────────────────────────── */
 
 @theme {
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-soft: rgba(37, 99, 235, 0.1);
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-primary-soft: rgba(59, 130, 246, 0.12);
 
   --color-secondary: #14b8a6;
   --color-secondary-soft: rgba(20, 184, 166, 0.1);
 
   --color-accent: #f97316;
-  --color-accent-soft: #ffe8d6;
+  --color-accent-soft: rgba(249, 115, 22, 0.12);
 
-  --color-glow-primary: rgba(37, 99, 235, 0.12);
-  --color-glow-secondary: rgba(20, 184, 166, 0.14);
-  --color-glow-accent: rgba(249, 115, 22, 0.14);
+  --color-glow-primary: rgba(59, 130, 246, 0.16);
+  --color-glow-secondary: rgba(20, 184, 166, 0.12);
+  --color-glow-accent: rgba(249, 115, 22, 0.1);
 
-  --color-bg: #fffdf7;
-  --color-bg-soft: #f2fbfa;
-  --color-card: #ffffff;
+  --color-bg: #05070b;
+  --color-bg-soft: #090d14;
+  --color-card: #0d121c;
+  --color-card-light: #121927;
 
-  --color-border: #e2e8f0;
+  --color-border: rgba(59, 130, 246, 0.2);
 
-  --color-heading: #0f172a;
-  --color-body: #475569;
+  --color-heading: #f8fafc;
+  --color-body: #94a3b8;
   --color-muted: #64748b;
 
   --font-sans: var(--font-geist-sans), Inter, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), "SFMono-Regular", Consolas,
     "Liberation Mono", monospace;
+  --font-display: var(--font-orbitron), "Orbitron", var(--font-sans);
 
   --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-float: float 6s ease-in-out infinite;
@@ -44,7 +46,7 @@
 ───────────────────────────────────────────────────────────── */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --section-padding-y: clamp(4.5rem, 8vw, 7rem);
   --container-padding-x: clamp(1rem, 4vw, 2rem);
   --radius-xl: 1.5rem;
@@ -66,7 +68,7 @@ body {
   background:
     radial-gradient(circle at 18% 12%, var(--color-glow-primary), transparent 32%),
     radial-gradient(circle at 82% 18%, var(--color-glow-secondary), transparent 28%),
-    linear-gradient(180deg, #fffdf7 0%, #f2fbfa 45%, #fffdf7 100%);
+    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 45%, var(--color-bg) 100%);
   color: var(--color-body);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
@@ -75,8 +77,8 @@ body {
 }
 
 body::selection {
-  background: rgba(37, 99, 235, 0.2);
-  color: var(--color-primary);
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--text-primary, #f8fafc);
 }
 
 img,
@@ -104,7 +106,7 @@ a {
 }
 
 ::placeholder {
-  color: rgba(100, 116, 139, 0.6);
+  color: rgba(148, 163, 184, 0.6);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -142,16 +144,16 @@ a {
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg,
-      rgba(37, 99, 235, 0.5),
-      rgba(20, 184, 166, 0.7));
+      rgba(59, 130, 246, 0.5),
+      rgba(20, 184, 166, 0.5));
   border: 2px solid var(--color-bg-soft);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg,
-      rgba(37, 99, 235, 0.8),
-      rgba(20, 184, 166, 0.9));
+      rgba(59, 130, 246, 0.8),
+      rgba(20, 184, 166, 0.8));
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -218,8 +220,8 @@ a {
   pointer-events: none;
   content: "";
   background-image:
-    linear-gradient(rgba(37, 99, 235, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
 }
@@ -232,16 +234,18 @@ a {
   background: var(--color-card);
   border: 1px solid var(--color-border);
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 8px 24px rgba(15, 23, 42, 0.06);
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(59, 130, 246, 0.04) inset;
 }
 
 .glass-panel-strong {
   background: var(--color-card);
   border: 1px solid var(--color-border);
   box-shadow:
-    0 4px 12px rgba(15, 23, 42, 0.06),
-    0 20px 48px rgba(15, 23, 42, 0.08);
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    0 20px 48px rgba(0, 0, 0, 0.3),
+    0 0 32px rgba(59, 130, 246, 0.06);
 }
 
 .glass-panel-hover {
@@ -253,10 +257,10 @@ a {
 }
 
 .glass-panel-hover:hover {
-  border-color: #bfdbfe;
+  border-color: rgba(59, 130, 246, 0.5);
   box-shadow:
-    0 4px 8px rgba(15, 23, 42, 0.06),
-    0 16px 32px rgba(15, 23, 42, 0.08);
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 16px 32px rgba(59, 130, 246, 0.15);
   transform: translateY(-4px);
 }
 
@@ -304,9 +308,9 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: #ffffff;
+  background: var(--color-card);
   color: var(--color-primary);
   font-weight: 650;
   transition:
@@ -316,8 +320,8 @@ a {
 }
 
 .btn-secondary:hover {
-  background: #eff6ff;
-  border-color: #93c5fd;
+  background: var(--color-card-light);
+  border-color: var(--color-primary);
   transform: translateY(-2px);
 }
 
@@ -417,5 +421,39 @@ a {
   animation-name: scroll-right;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Ambient background drift (AnimatedBackground blobs)
+───────────────────────────────────────────────────────────── */
+
+@keyframes drift-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(4%, 6%) scale(1.08); }
+}
+
+@keyframes drift-medium {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6%, 4%) scale(0.95); }
+}
+
+@keyframes drift-fast {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5%, -5%) scale(1.05); }
+}
+
+.animate-drift-slow {
+  animation: drift-slow 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-drift-medium {
+  animation: drift-medium 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-drift-fast {
+  animation: drift-fast 26s ease-in-out infinite;
   will-change: transform;
 }

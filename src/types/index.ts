@@ -2,7 +2,8 @@ export type ProjectStatus =
   | "Live"
   | "Case Study Coming Soon"
   | "Private Code"
-  | "In Progress";
+  | "In Progress"
+  | "Personal Project";
 
 export interface Project {
   id: string;

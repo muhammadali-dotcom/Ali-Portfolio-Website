@@ -1,10 +1,11 @@
+"use client";
+
 import React from "react";
 import SectionHeading from "../ui/SectionHeading";
-import GlassCard from "../ui/GlassCard";
-import TechBadge from "../ui/TechBadge";
+import SkillCard from "../ui/SkillCard";
 import FadeInUp from "../animations/FadeInUp";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
-import { skills, skillCategories } from "@/data/skills";
+import { skills } from "@/data/skills";
 
 export const Skills: React.FC = () => {
   return (
@@ -21,21 +22,10 @@ export const Skills: React.FC = () => {
           />
         </FadeInUp>
 
-        <StaggerChildren className="grid grid-cols-1 gap-6 mt-12 sm:grid-cols-2 lg:grid-cols-3">
-          {skillCategories.map(({ id, label }) => (
-            <StaggerItem key={id}>
-              <GlassCard className="h-full">
-                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-primary">
-                  {label}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {skills
-                    .filter((skill) => skill.category === id)
-                    .map((skill) => (
-                      <TechBadge key={skill.name} name={skill.name} />
-                    ))}
-                </div>
-              </GlassCard>
+        <StaggerChildren className="grid grid-cols-2 gap-4 mt-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {skills.map((skill) => (
+            <StaggerItem key={skill.name}>
+              <SkillCard name={skill.name} />
             </StaggerItem>
           ))}
         </StaggerChildren>

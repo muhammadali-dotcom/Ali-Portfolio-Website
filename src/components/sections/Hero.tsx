@@ -1,11 +1,29 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { ArrowDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowDown, Code2, Brain, Trophy, Lightbulb } from "lucide-react";
 
 import Button from "../ui/Button";
-import TextReveal from "../animations/TextReveal";
+import MagneticButton from "../ui/MagneticButton";
+import TypingRoles from "../animations/TypingRoles";
+import BlurRevealText from "../animations/BlurRevealText";
 import FadeInUp from "../animations/FadeInUp";
+import { useMouseParallax } from "@/hooks/useMouseParallax";
+
+const roles = [
+  "Software Engineer",
+  "Full-Stack Developer",
+  "Problem Solver",
+  "AI Enthusiast",
+];
+
+const floatingIcons = [
+  { Icon: Code2, position: "left-[2%] top-[22%]", delay: 0 },
+  { Icon: Brain, position: "right-[2%] top-[18%]", delay: 1.2 },
+  { Icon: Trophy, position: "left-[2%] bottom-[8%]", delay: 0.6 },
+  { Icon: Lightbulb, position: "right-[2%] bottom-[12%]", delay: 1.8 },
+];
 
 const TechSphereCanvas = dynamic(() => import("../three/TechSphereCanvas"), {
   ssr: false,
@@ -28,6 +46,9 @@ const trustBadges = [
 ];
 
 export default function Hero() {
+  const { x: sphereX, y: sphereY } = useMouseParallax(18);
+  const { x: headingX, y: headingY } = useMouseParallax(-6);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -45,9 +66,24 @@ export default function Hero() {
       {/* Subtle grid overlay */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.03)_1px,transparent_1px)] bg-[size:72px_72px] opacity-40" />
 
+      {/* Floating decorative icons */}
+      {floatingIcons.map(({ Icon, position, delay }) => (
+        <div
+          key={position}
+          aria-hidden="true"
+          className={`pointer-events-none absolute z-10 hidden h-14 w-14 items-center justify-center rounded-full border border-primary/20 bg-card/60 text-primary/70 backdrop-blur-sm animate-float xl:flex ${position}`}
+          style={{ animationDelay: `${delay}s` }}
+        >
+          <Icon className="h-6 w-6" />
+        </div>
+      ))}
+
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
         {/* Left content */}
-        <div className="flex flex-col justify-center text-left lg:min-h-[680px]">
+        <motion.div
+          className="flex flex-col justify-center text-left lg:min-h-[680px]"
+          style={{ x: headingX, y: headingY }}
+        >
           <FadeInUp delay={0.1}>
             <span className="mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
               Available for Freelance & Remote Work
@@ -60,46 +96,41 @@ export default function Hero() {
             </span>
 
             <span className="block">
-              <TextReveal text="Muhammad Ali." delay={0.2} />
+              <BlurRevealText text="Muhammad Ali." delay={0.2} />
             </span>
           </h1>
 
-          <p className="mb-5 text-xl font-semibold text-primary sm:text-2xl lg:text-3xl">
-            <TextReveal text="Software Engineer" delay={0.4} />
+          <p className="mb-5 font-display text-xl font-black uppercase tracking-wide text-primary sm:text-2xl lg:text-3xl">
+            <TypingRoles roles={roles} />
           </p>
 
           <FadeInUp delay={0.6}>
-            <p className="mb-3 max-w-xl text-base leading-relaxed text-body lg:text-lg">
+            <p className="mb-8 max-w-xl text-base leading-relaxed text-body lg:text-lg">
               I build full-stack web applications, real-time systems, and
               AI-powered tools that solve real business problems.
-            </p>
-            <p className="mb-8 max-w-xl text-base leading-relaxed text-body lg:text-lg">
-              I specialize in transforming complex ideas into elegant, well-engineered solutions. Whether it's frontend interfaces, backend systems, or full-stack applications, I deliver code that's not just functional, but a pleasure to maintain.
-            </p>
-          </FadeInUp>
-
-          <FadeInUp delay={0.68}>
-            <p className="mb-8 max-w-xl text-sm leading-relaxed text-body lg:text-base">
-              I combine technical expertise with a genuine passion for problem-solving. Over the years, I&apos;ve worked on diverse projects across web and mobile platforms, always focusing on writing maintainable code and delivering solutions that create real impact.
             </p>
           </FadeInUp>
 
           <FadeInUp delay={0.75} className="flex flex-col gap-4 sm:flex-row">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => scrollToSection("projects")}
-            >
-              View My Work
-            </Button>
+            <MagneticButton range={70} strength={0.25}>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => scrollToSection("projects")}
+              >
+                View My Work
+              </Button>
+            </MagneticButton>
 
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => scrollToSection("contact")}
-            >
-              Let&apos;s Build Something
-            </Button>
+            <MagneticButton range={70} strength={0.25}>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => scrollToSection("contact")}
+              >
+                Let&apos;s Build Something
+              </Button>
+            </MagneticButton>
           </FadeInUp>
 
           <FadeInUp delay={0.9} className="mt-8 flex flex-wrap gap-2.5">
@@ -112,16 +143,19 @@ export default function Hero() {
               </span>
             ))}
           </FadeInUp>
-        </div>
+        </motion.div>
 
         {/* Right 3D scene */}
-        <div className="relative flex w-full justify-center lg:min-h-[680px] lg:items-center lg:-translate-y-8 xl:-translate-y-10">
+        <motion.div
+          className="relative flex w-full justify-center lg:min-h-[680px] lg:items-center lg:-translate-y-8 xl:-translate-y-10"
+          style={{ x: sphereX, y: sphereY }}
+        >
           <div className="relative w-full max-w-[420px] sm:max-w-[480px] lg:max-w-none">
             <FadeInUp delay={0.35} className="w-full">
               <TechSphereCanvas />
             </FadeInUp>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}
@@ -132,6 +166,7 @@ export default function Hero() {
 
         <button
           type="button"
+          data-cursor="button"
           onClick={() => scrollToSection("tech-strip")}
           aria-label="Scroll to next section"
           className="rounded-full border border-border bg-card p-2 text-primary shadow-sm transition hover:border-primary/40 hover:bg-primary/10"

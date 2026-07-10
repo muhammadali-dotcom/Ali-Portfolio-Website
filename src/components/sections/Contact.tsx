@@ -137,7 +137,7 @@ export const Contact: React.FC = () => {
                   <h3 className="text-xl font-bold text-heading mb-2">Send a Message</h3>
 
                   {/* Name field */}
-                  <div>
+                  <div className="group relative">
                     <label htmlFor="name" className="block text-xs font-semibold text-body uppercase tracking-wider mb-2">
                       Your Name
                     </label>
@@ -150,10 +150,11 @@ export const Contact: React.FC = () => {
                       placeholder="John Doe"
                       className="w-full bg-bg-soft border border-border hover:border-border focus:border-primary focus:ring-2 focus:ring-primary/10 rounded-lg px-4 py-3 text-sm text-heading placeholder-body/50 focus:outline-none transition-all duration-200"
                     />
+                    <span className="pointer-events-none absolute bottom-0 left-4 right-4 h-[2px] origin-center scale-x-0 bg-primary transition-transform duration-300 ease-out group-focus-within:scale-x-100" />
                   </div>
 
                   {/* Email field */}
-                  <div>
+                  <div className="group relative">
                     <label htmlFor="email" className="block text-xs font-semibold text-body uppercase tracking-wider mb-2">
                       Your Email
                     </label>
@@ -166,10 +167,11 @@ export const Contact: React.FC = () => {
                       placeholder="john@example.com"
                       className="w-full bg-bg-soft border border-border hover:border-border focus:border-primary focus:ring-2 focus:ring-primary/10 rounded-lg px-4 py-3 text-sm text-heading placeholder-body/50 focus:outline-none transition-all duration-200"
                     />
+                    <span className="pointer-events-none absolute bottom-0 left-4 right-4 h-[2px] origin-center scale-x-0 bg-primary transition-transform duration-300 ease-out group-focus-within:scale-x-100" />
                   </div>
 
                   {/* Message field */}
-                  <div>
+                  <div className="group relative">
                     <label htmlFor="message" className="block text-xs font-semibold text-body uppercase tracking-wider mb-2">
                       Message
                     </label>
@@ -182,6 +184,7 @@ export const Contact: React.FC = () => {
                       placeholder="Describe your project, role, or proposal here..."
                       className="w-full bg-bg-soft border border-border hover:border-border focus:border-primary focus:ring-2 focus:ring-primary/10 rounded-lg px-4 py-3 text-sm text-heading placeholder-body/50 focus:outline-none transition-all duration-200 resize-none"
                     />
+                    <span className="pointer-events-none absolute bottom-0 left-4 right-4 h-[2px] origin-center scale-x-0 bg-primary transition-transform duration-300 ease-out group-focus-within:scale-x-100" />
                   </div>
                 </div>
 
@@ -190,16 +193,24 @@ export const Contact: React.FC = () => {
                     type="submit"
                     variant="primary"
                     disabled={status === "sending"}
-                    className="w-full sm:w-auto px-8"
+                    className="w-full sm:w-auto px-8 flex items-center justify-center gap-2"
                   >
+                    {status === "sending" && (
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    )}
                     {status === "sending" ? "Sending..." : "Send Message"}
                   </Button>
-                  
+
                   {status === "success" && (
-                    <span className="text-sm text-primary font-semibold flex items-center gap-1.5 animate-pulse">
+                    <motion.span
+                      initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="text-sm text-primary font-semibold flex items-center gap-1.5"
+                    >
                       <Icons.CheckCircle2 className="w-4 h-4" />
                       Message sent successfully!
-                    </span>
+                    </motion.span>
                   )}
                 </div>
               </form>

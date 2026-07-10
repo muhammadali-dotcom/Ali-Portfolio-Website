@@ -1,4 +1,5 @@
 import React from "react";
+import { MessageCircleQuestion } from "lucide-react";
 import SectionHeading from "../ui/SectionHeading";
 import GlassCard from "../ui/GlassCard";
 import FadeInUp from "../animations/FadeInUp";
@@ -21,8 +22,11 @@ export const FAQ: React.FC = () => {
       <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
         {faqs.map(({ question, answer }) => (
           <StaggerItem key={question}>
-            <GlassCard className="h-full">
-              <h3 className="text-base font-bold text-primary mb-3">{question}</h3>
+            <GlassCard className="group h-full transition-colors duration-300 hover:border-primary/25">
+              <div className="mb-3 flex items-start gap-2.5">
+                <MessageCircleQuestion className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <h3 className="text-base font-bold text-primary">{question}</h3>
+              </div>
               <p className="text-sm text-body leading-relaxed">{answer}</p>
             </GlassCard>
           </StaggerItem>

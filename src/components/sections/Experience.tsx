@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeading from "../ui/SectionHeading";
 import GlassCard from "../ui/GlassCard";
 import FadeInUp from "../animations/FadeInUp";
 import { Briefcase, MapPin } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const experience = [
   {
@@ -51,14 +54,35 @@ const experience = [
 
 export const Experience: React.FC = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
+  const lineFillRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start 0.8", "end 0.6"],
-  });
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    if (!timelineRef.current || !lineFillRef.current) return;
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        lineFillRef.current,
+        { height: "0%", opacity: 0.4 },
+        {
+          height: "100%",
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: timelineRef.current,
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: 0.6,
+          },
+        }
+      );
+    }, timelineRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
 
   return (
     <section id="experience" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 lg:py-24">
@@ -73,23 +97,29 @@ export const Experience: React.FC = () => {
         />
       </FadeInUp>
 
-      <div ref={timelineRef} className="relative mt-10 pl-8 md:ml-44 md:mt-16 md:pl-20">
-        {/* Static track */}
-        <div className="absolute left-0 top-0 h-full w-[2px] bg-border" />
-        {/* Animated fill that grows as you scroll */}
-        <motion.div
-          className="absolute left-0 top-0 w-[2px] origin-top bg-primary"
-          style={{ height: lineHeight }}
+      <div ref={timelineRef} className="relative mt-10 md:mt-16">
+        {/* Static track — centered on desktop, left-aligned on mobile */}
+        <div className="absolute left-4 top-0 h-full w-[2px] bg-border md:left-1/2 md:-translate-x-1/2" />
+        {/* Animated fill that grows as you scroll, driven by GSAP ScrollTrigger */}
+        <div
+          ref={lineFillRef}
+          className="absolute left-4 top-0 w-[2px] origin-top bg-primary shadow-[0_0_12px_rgba(59,130,246,0.6)] md:left-1/2 md:-translate-x-1/2"
+          style={{ height: prefersReducedMotion ? "100%" : "0%" }}
         />
 
-        <div className="space-y-14">
+        <div className="space-y-14 md:space-y-20">
           {experience.map((exp, index) => {
-            const fromSide = index % 2 === 0 ? -32 : 32;
+            const isLeft = index % 2 === 0;
+            const fromSide = isLeft ? -32 : 32;
+            const number = String(index + 1).padStart(2, "0");
 
             return (
               <motion.div
                 key={exp.id}
-                className="relative"
+                className={cn(
+                  "relative pl-12 md:w-1/2 md:pl-0",
+                  isLeft ? "md:pr-14 md:text-right" : "md:ml-auto md:pl-14"
+                )}
                 initial={{
                   opacity: 0,
                   x: prefersReducedMotion ? 0 : fromSide,
@@ -101,15 +131,33 @@ export const Experience: React.FC = () => {
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
-                <div className="hidden md:block absolute -left-[320px] top-2 w-44 text-right text-sm font-bold text-primary">
-                  {exp.duration}
-                </div>
-
-                <div className="absolute -left-[14px] md:-left-[94px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 border-primary bg-bg shadow-[0_0_0_4px_rgba(37,99,235,0.12)]">
+                {/* Timeline dot */}
+                <div
+                  className={cn(
+                    "absolute left-4 top-1.5 z-10 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full border-2 border-primary bg-bg shadow-[0_0_0_4px_rgba(59,130,246,0.15)]",
+                    isLeft
+                      ? "md:left-auto md:right-0 md:translate-x-1/2"
+                      : "md:left-0 md:-translate-x-1/2"
+                  )}
+                >
                   <Briefcase className="h-3.5 w-3.5 text-primary" />
                 </div>
 
-                <GlassCard className="transition-all duration-300 hover:border-primary/20">
+                <span
+                  className={cn(
+                    "mb-2 block font-display text-4xl font-black text-transparent lg:text-5xl",
+                    isLeft ? "md:text-right" : "md:text-left"
+                  )}
+                  style={{ WebkitTextStroke: "1.5px var(--color-primary)", opacity: 0.35 }}
+                >
+                  {number}
+                </span>
+
+                <span className="mb-2 inline-block text-xs font-bold uppercase tracking-wider text-primary">
+                  {exp.duration}
+                </span>
+
+                <GlassCard className="mt-2 text-left transition-all duration-300 hover:border-primary/30">
                   <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-start">
                     <div>
                       <h3 className="text-xl font-bold text-heading">
@@ -131,10 +179,6 @@ export const Experience: React.FC = () => {
                         <span>{exp.location}</span>
                       </div>
                     </div>
-
-                    <span className="md:hidden text-xs font-bold uppercase tracking-wider text-primary">
-                      {exp.duration}
-                    </span>
                   </div>
 
                   <ul className="space-y-3">

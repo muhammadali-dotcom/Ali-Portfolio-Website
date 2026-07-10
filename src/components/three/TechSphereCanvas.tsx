@@ -43,7 +43,7 @@ export const TechSphereCanvas: React.FC = () => {
             <div className="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.08)_1px,transparent_1px)] bg-[size:42px_42px] opacity-30" />
 
             <div className="absolute top-10 text-center">
-              <p className="font-mono text-[11px] font-semibold tracking-[0.45em] text-secondary">// INITIALIZING</p>
+              <p className="font-mono text-[11px] font-semibold tracking-[0.45em] text-secondary">{"// INITIALIZING"}</p>
               <h2 className="mt-4 text-4xl font-black tracking-[0.18em] text-white">TECH STACK</h2>
               <p className="mt-3 font-mono text-[10px] tracking-[0.45em] text-white/35">SOFTWARE ENGINEER</p>
             </div>
@@ -82,7 +82,7 @@ export const TechSphereCanvas: React.FC = () => {
           <div className="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.08)_1px,transparent_1px)] bg-[size:48px_48px] opacity-30" />
           <div className="absolute inset-x-0 top-0 h-32 animate-[scan_5s_ease-in-out_infinite] bg-gradient-to-b from-primary/10 via-secondary/10 to-transparent" />
           <div className="pointer-events-none absolute left-1/2 top-12 z-20 -translate-x-1/2 text-center">
-            <p className="font-mono text-[12px] font-semibold tracking-[0.55em] text-secondary">// INITIALIZING</p>
+            <p className="font-mono text-[12px] font-semibold tracking-[0.55em] text-secondary">{"// INITIALIZING"}</p>
           </div>
 
           <div className="absolute bottom-12 left-8 z-20 w-[390px] overflow-hidden rounded-2xl border border-white/10 bg-black/45 shadow-[0_0_60px_rgba(0,0,0,0.45)] backdrop-blur-xl">

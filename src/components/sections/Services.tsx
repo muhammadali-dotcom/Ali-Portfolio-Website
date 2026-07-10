@@ -1,7 +1,7 @@
 import React from "react";
 import SectionHeading from "../ui/SectionHeading";
 import ServiceCard from "../ui/ServiceCard";
-import FadeInUp from "../animations/FadeInUp";
+import ScrollReveal from "../animations/ScrollReveal";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { services } from "@/data/services";
 
@@ -11,13 +11,13 @@ export const Services: React.FC = () => {
       {/* Background Glow */}
       <div className="absolute top-[20%] left-[10%] w-[350px] h-[350px] radial-glow opacity-30 pointer-events-none" />
 
-      <FadeInUp>
+      <ScrollReveal>
         <SectionHeading
           badge="What I Build"
           title="Software Built Around Your Business"
           subtitle="Outcome-focused engineering — from business platforms and real-time systems to AI tools and the APIs that power them."
         />
-      </FadeInUp>
+      </ScrollReveal>
 
       <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
         {services.map((service) => (

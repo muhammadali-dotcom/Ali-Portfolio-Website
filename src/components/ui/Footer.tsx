@@ -8,25 +8,47 @@ import FadeInUp from "@/components/animations/FadeInUp";
 import { socials } from "@/data/socials";
 import { resolveIcon } from "@/lib/utils";
 
+const footerNavLinks = [
+  { name: "Home", href: "#hero" },
+  { name: "About", href: "#about" },
+  { name: "Experience", href: "#experience" },
+  { name: "Work", href: "#projects" },
+  { name: "Stack", href: "#skills" },
+  { name: "Profiles", href: "#profiles" },
+  { name: "Contact", href: "#contact" },
+];
+
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-border bg-bg-soft py-8 px-4 sm:px-6 lg:py-12">
-      <FadeInUp
-        className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
-        viewport={{ once: true, amount: 0 }}
-      >
-        {/* Logo and Copy */}
-        <div className="flex flex-col items-center md:items-start gap-2">
+    <footer className="border-t border-border bg-bg-soft px-4 py-10 sm:px-6 lg:py-14">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 text-center">
+        <div className="flex flex-col items-center gap-2">
           <span className="text-lg font-bold text-heading">
             ALI<span className="text-primary">.DEV</span>
           </span>
           <p className="text-xs text-body">
-            © {new Date().getFullYear()} Ali. All rights reserved.
+            Building software that solves real problems.
           </p>
         </div>
 
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          {footerNavLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              data-cursor="link"
+              className="text-sm font-medium text-body transition-colors hover:text-primary"
+            >
+              {link.name}
+            </a>
+          ))}
+        </nav>
+
         {/* Social Links */}
-        <div className="flex items-center gap-4">
+        <FadeInUp
+          className="flex items-center gap-4"
+          viewport={{ once: true, amount: 0 }}
+        >
           {socials.map((social) => {
             const IconComponent = resolveIcon(
               [Icons, CustomIcons],
@@ -53,8 +75,12 @@ export const Footer: React.FC = () => {
               </motion.a>
             );
           })}
-        </div>
-      </FadeInUp>
+        </FadeInUp>
+
+        <p className="text-xs text-body">
+          © {new Date().getFullYear()} Ali. All rights reserved.
+        </p>
+      </div>
     </footer>
   );
 };

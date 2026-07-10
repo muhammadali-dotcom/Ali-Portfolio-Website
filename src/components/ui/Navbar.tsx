@@ -8,10 +8,12 @@ import Button from "./Button";
 import MagneticButton from "./MagneticButton";
 
 const navLinks = [
+  { name: "About", href: "#about" },
+  { name: "Experience", href: "#experience" },
   { name: "Work", href: "#projects" },
   { name: "Services", href: "#services" },
   { name: "Stack", href: "#skills" },
-  { name: "Experience", href: "#experience" },
+  { name: "Profiles", href: "#profiles" },
   { name: "FAQ", href: "#faq" },
   { name: "Contact", href: "#contact" },
 ];
@@ -61,7 +63,7 @@ export const Navbar: React.FC = () => {
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-300",
         isScrolled
-          ? "bg-white/80 border-b border-border backdrop-blur-md py-4"
+          ? "bg-bg/80 border-b border-border backdrop-blur-md py-4"
           : "bg-transparent py-6"
       )}
     >
@@ -79,6 +81,7 @@ export const Navbar: React.FC = () => {
               <a
                 key={link.name}
                 href={link.href}
+                data-cursor="link"
                 className={cn(
                   "relative text-sm font-medium transition-colors duration-200 group",
                   isActive ? "text-heading" : "text-body hover:text-heading"
@@ -135,7 +138,7 @@ export const Navbar: React.FC = () => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 32 }}
-            className="fixed inset-y-0 right-0 w-full sm:max-w-xs bg-white/95 border-l border-border backdrop-blur-xl z-50 p-8 flex flex-col justify-between md:hidden"
+            className="fixed inset-y-0 right-0 w-full sm:max-w-xs bg-bg/95 border-l border-border backdrop-blur-xl z-50 p-8 flex flex-col justify-between md:hidden"
           >
             <div className="flex flex-col">
               <div className="flex justify-between items-center mb-12">

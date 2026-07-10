@@ -51,16 +51,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
         onClick={handleClick}
         className={cn(
-          "relative inline-flex items-center justify-center overflow-hidden font-medium rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:pointer-events-none",
+          "relative inline-flex items-center justify-center overflow-hidden font-semibold rounded-full transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:pointer-events-none",
           // Variants
           {
-            "bg-primary text-white hover:bg-primary-hover shadow-[0_4px_12px_rgba(37,99,235,0.25)] hover:shadow-[0_6px_18px_rgba(37,99,235,0.35)]":
+            "bg-primary text-white hover:bg-primary-hover shadow-[0_4px_12px_rgba(37,99,235,0.25)] hover:shadow-[0_0_28px_rgba(59,130,246,0.55)]":
               variant === "primary",
-            "bg-white text-primary border border-[#BFDBFE] hover:bg-[#EFF6FF]":
+            "bg-card text-primary border border-border hover:bg-card-light hover:border-primary/50":
               variant === "secondary",
-            "border border-border hover:border-primary/50 text-heading hover:text-primary bg-transparent":
+            "border border-primary/30 hover:border-primary text-heading hover:text-primary bg-transparent hover:shadow-[0_0_24px_rgba(59,130,246,0.35)]":
               variant === "outline",
-            "text-body hover:text-heading bg-transparent hover:bg-black/[0.03]":
+            "text-body hover:text-heading bg-transparent hover:bg-white/[0.04]":
               variant === "ghost",
           },
           // Sizes

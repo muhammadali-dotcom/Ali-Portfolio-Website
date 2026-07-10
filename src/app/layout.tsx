@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Orbitron } from "next/font/google";
 import Script from "next/script";
 
 import "./globals.css";
@@ -8,7 +8,8 @@ import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import ScrollToTop from "@/components/ui/ScrollToTop";
-import CursorGlow from "@/components/ui/CursorGlow";
+import ClientEffects from "@/components/ui/ClientEffects";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import JsonLd from "@/components/JsonLd";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ali-portfolio-website-dev.vercel.app";
@@ -22,6 +23,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
   display: "swap",
 });
 
@@ -92,7 +100,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#FFFDF7",
+  themeColor: "#05070b",
 };
 
 export default function RootLayout({
@@ -105,24 +113,26 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} scroll-smooth antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen overflow-x-hidden bg-dark-bg text-text-primary selection:bg-emerald-accent/25 selection:text-emerald-accent">
+      <body className="min-h-screen overflow-x-hidden bg-bg text-heading selection:bg-primary/25 selection:text-primary">
         <JsonLd />
-        <div className="relative flex min-h-screen flex-col">
-          <CursorGlow />
-          <ScrollToTop />
-          <ScrollProgress />
+        <SmoothScrollProvider>
+          <div className="relative flex min-h-screen flex-col">
+            <ClientEffects />
+            <ScrollToTop />
+            <ScrollProgress />
 
-          <Navbar />
+            <Navbar />
 
-          <main className="relative z-10 flex w-full flex-1 flex-col">
-            {children}
-          </main>
+            <main className="relative z-10 flex w-full flex-1 flex-col">
+              {children}
+            </main>
 
-          <Footer />
-        </div>
+            <Footer />
+          </div>
+        </SmoothScrollProvider>
 
         {GA_ID && (
           <>

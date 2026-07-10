@@ -3,8 +3,13 @@ import { useRef, useEffect, useState } from "react";
 export function useMagneticEffect(range = 50, strength = 0.3) {
   const ref = useRef<HTMLButtonElement | HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  // Normalized -1..1 offset from center, used to drive glow-shadow direction.
+  const [glowOffset, setGlowOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       const element = ref.current;
       if (!element) return;
@@ -23,28 +28,31 @@ export function useMagneticEffect(range = 50, strength = 0.3) {
           x: distanceX * strength,
           y: distanceY * strength,
         });
+        setGlowOffset({
+          x: Math.max(-1, Math.min(1, distanceX / range)),
+          y: Math.max(-1, Math.min(1, distanceY / range)),
+        });
       } else {
         // Snap back
         setPosition({ x: 0, y: 0 });
+        setGlowOffset({ x: 0, y: 0 });
       }
     };
 
     const handleMouseLeave = () => {
       setPosition({ x: 0, y: 0 });
+      setGlowOffset({ x: 0, y: 0 });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    if (ref.current) {
-      ref.current.addEventListener("mouseleave", handleMouseLeave);
-    }
+    const currentEl = ref.current;
+    currentEl?.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      if (ref.current) {
-        ref.current.removeEventListener("mouseleave", handleMouseLeave);
-      }
+      currentEl?.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [range, strength]);
 
-  return { ref, position };
+  return { ref, position, glowOffset };
 }
