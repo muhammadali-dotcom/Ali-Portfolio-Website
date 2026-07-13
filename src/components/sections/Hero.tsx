@@ -43,8 +43,6 @@ const trustBadges = [
   "Full-stack development",
   "Real-time systems",
   "AI integrations",
-  "PostgreSQL + Redis",
-  "Remote/Freelance available",
 ];
 
 export default function Hero() {

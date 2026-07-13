@@ -26,7 +26,7 @@ const StatusBadge: React.FC<{ status: Project["status"] }> = ({ status }) => (
 );
 
 const ProjectDetails: React.FC<{ project: Project }> = ({ project }) => {
-  const { problem, solution, features, tech } = project;
+  const { problem, solution, result, features, tech } = project;
 
   return (
     <div className="space-y-5">
@@ -42,6 +42,13 @@ const ProjectDetails: React.FC<{ project: Project }> = ({ project }) => {
           Solution
         </h4>
         <p className="text-sm leading-relaxed text-body">{solution}</p>
+      </div>
+
+      <div>
+        <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-secondary">
+          Result
+        </h4>
+        <p className="text-sm leading-relaxed text-body">{result}</p>
       </div>
 
       <div>

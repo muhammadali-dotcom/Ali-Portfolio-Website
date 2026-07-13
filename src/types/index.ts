@@ -11,6 +11,7 @@ export interface Project {
   description: string;
   problem: string;
   solution: string;
+  result: string;
   features: string[];
   tech: string[];
   image: string;
