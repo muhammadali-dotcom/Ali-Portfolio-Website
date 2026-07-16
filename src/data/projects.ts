@@ -78,25 +78,29 @@ export const projects: Project[] = [
   },
   {
     id: "project-4",
-    title: "SyncFlow — Kanban Planner",
+    title: "Expenzo — Expense Tracker & Group Settlements",
     description:
-      "A collaborative workspace and task organizer with drag-and-drop mechanics and offline-first sync.",
+      "A personal and group expense tracker with budgeting, analytics, and smart settlements for shared costs.",
     problem:
-      "Teams needed a lightweight kanban tool that stays fully usable offline and syncs cleanly once back online, without losing local changes.",
+      "Tracking personal spending and splitting shared expenses with friends usually means juggling spreadsheets and manually figuring out who owes whom.",
     solution:
-      "A drag-and-drop kanban planner with keyboard shortcuts and persistent local state, using an offline-first sync layer so boards stay usable without a connection.",
+      "A Django-powered expense tracker that logs income and expenses by category, visualizes monthly trends and category budgets, and automatically computes settlements for group expenses split across a people directory.",
     result:
-      "The result is a kanban planner where boards and cards persist locally via Dexie.js and stay usable offline, syncing cleanly once the connection returns.",
+      "The result is a single dashboard for managing personal budgets and group expenses, from logging a transaction to seeing exactly who owes whom after a trip or shared bill.",
     features: [
-      "Drag-and-drop board & cards",
-      "Keyboard shortcuts",
-      "Persistent state sync",
-      "Offline-first architecture",
+      "Transaction tracking with category, amount, date, and notes",
+      "Dashboard analytics — monthly income/expense trends and category breakdowns",
+      "Category budgets with spend tracking",
+      "Filter, search, edit, delete, and CSV export for transactions",
+      "Group expenses with automatic smart settlements",
+      "People directory for managing shared-expense contacts",
+      "Multi-currency profile (USD, EUR, GBP, PKR, INR)",
+      "Full authentication — registration, login/logout, password reset",
     ],
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Dexie.js"],
-    image: "/SyncFlow.png",
-    github: null,
+    tech: ["Django", "Python", "PostgreSQL", "Tailwind CSS"],
+    image: "/Expenzo.png",
+    github: "https://github.com/muhammadali-dotcom/django-expense-tracker",
     live: null,
-    status: "Private Code",
+    status: "Personal Project",
   },
 ];

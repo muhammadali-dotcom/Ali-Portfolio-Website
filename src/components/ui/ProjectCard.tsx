@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { X, ExternalLink } from "lucide-react";
+import { X, ExternalLink, BookOpen } from "lucide-react";
 import {
   motion,
   useMotionValue,
@@ -78,7 +78,7 @@ const ProjectDetails: React.FC<{ project: Project }> = ({ project }) => {
 };
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { title, description, image, github, live, status, featured } = project;
+  const { title, description, solution, image, github, live, status, featured } = project;
   const [mounted, setMounted] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const [imageError, setImageError] = React.useState(false);
@@ -216,9 +216,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                   {title}
                 </h3>
               </div>
-              <p className="text-sm text-body line-clamp-3 leading-relaxed">
-                {description}
-              </p>
+              <div className="max-h-32 overflow-y-auto pr-1 leading-relaxed">
+                <p className="text-sm text-body">{description}</p>
+                <p className="mt-2 text-sm text-body">{solution}</p>
+              </div>
             </div>
 
             <div className="mt-6">
@@ -249,6 +250,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                     >
                       <Github className="w-4 h-4" />
                       Code
+                    </a>
+                  )}
+                  {github && (
+                    <a
+                      href={`${github}#readme`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-cursor="link"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-body hover:text-heading transition-colors duration-200"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      README
                     </a>
                   )}
                   <span className="text-sm font-semibold text-primary">
@@ -329,6 +343,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                     >
                       <Github className="w-4 h-4" />
                       View Code
+                    </a>
+                  )}
+                  {github && (
+                    <a
+                      href={`${github}#readme`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-body hover:text-heading transition-colors duration-200"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      README
                     </a>
                   )}
                 </div>
