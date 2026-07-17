@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Terminal,
@@ -10,6 +11,51 @@ import {
   CheckCircle2,
   Cpu,
 } from "lucide-react";
+
+const terminalLines = [
+  { prefix: "$", text: "npm run dev", className: "" },
+  { prefix: "✓", text: "compiled successfully", className: "text-primary/80" },
+  { prefix: "✓", text: "server started on :3000", className: "text-primary/80" },
+  { prefix: ">", text: "ready in 340ms", className: "text-white/50" },
+];
+
+/** Types the given lines out one character at a time, holds, then loops.
+ * Mirrors the timeout/cleanup pattern in TypingRoles.tsx, but appends
+ * lines instead of deleting them. Freezes fully typed under reduced motion. */
+function useTypewriterLines(
+  lines: { text: string }[],
+  { typingSpeed = 38, lineHoldMs = 500, loopHoldMs = 1800, reduceMotion = false } = {}
+) {
+  const [lineIndex, setLineIndex] = useState(reduceMotion ? lines.length - 1 : 0);
+  const [charCount, setCharCount] = useState(
+    reduceMotion ? lines[lines.length - 1].text.length : 0
+  );
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    const currentLine = lines[lineIndex];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (charCount < currentLine.text.length) {
+      timeout = setTimeout(() => setCharCount((c) => c + 1), typingSpeed);
+    } else if (lineIndex < lines.length - 1) {
+      timeout = setTimeout(() => {
+        setLineIndex((i) => i + 1);
+        setCharCount(0);
+      }, lineHoldMs);
+    } else {
+      timeout = setTimeout(() => {
+        setLineIndex(0);
+        setCharCount(0);
+      }, loopHoldMs);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [lines, lineIndex, charCount, typingSpeed, lineHoldMs, loopHoldMs, reduceMotion]);
+
+  return { lineIndex, charCount };
+}
 
 const techStack = ["React", "Next.js", "Node.js", "PostgreSQL", "AI"];
 
@@ -35,7 +81,7 @@ const GlassPanel: React.FC<{
   reduceMotion?: boolean;
 }> = ({ children, className = "", floatDuration = 6, floatDelay = 0, reduceMotion }) => (
   <motion.div
-    className={`rounded-lg border border-white/10 bg-black/40 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl ${className}`}
+    className={`rounded-lg border border-white/[0.08] bg-gradient-to-b from-white/[0.07] via-black/40 to-black/50 shadow-[0_12px_40px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.07)] backdrop-blur-xl ${className}`}
     animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
     transition={{ duration: floatDuration, delay: floatDelay, repeat: Infinity, ease: "easeInOut" }}
   >
@@ -44,7 +90,7 @@ const GlassPanel: React.FC<{
 );
 
 const PanelHeader: React.FC<{ icon: React.ReactNode; label: string }> = ({ icon, label }) => (
-  <div className="flex items-center gap-1.5 border-b border-white/10 px-2.5 py-1.5">
+  <div className="flex items-center gap-1.5 rounded-t-lg border-b border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5">
     <span className="text-secondary">{icon}</span>
     <span className="font-mono text-[9px] font-semibold uppercase tracking-wider text-white/60">
       {label}
@@ -52,7 +98,7 @@ const PanelHeader: React.FC<{ icon: React.ReactNode; label: string }> = ({ icon,
   </div>
 );
 
-/** Connection lines with a glowing particle traveling along each path. Desktop only. */
+/** Connection lines that glow with a slow, staggered breathing pulse. Desktop only. */
 type Point = [number, number];
 
 const connectionPaths: { d: string; from: Point; to: Point }[] = [
@@ -95,11 +141,16 @@ const ConnectionLines: React.FC<{ reduceMotion?: boolean }> = ({ reduceMotion })
         </filter>
       </defs>
 
-      {/* Soft outer glow pass */}
-      <g filter="url(#dcc-glow)" opacity="0.8">
-        {connectionPaths.map(({ d }) => (
+      {/* Soft outer glow pass — breathes slowly, staggered per line so the
+          panel reads as an organically "alive" system rather than a blink */}
+      {connectionPaths.map(({ d }, i) => (
+        <g
+          key={`${d}-glow`}
+          filter="url(#dcc-glow)"
+          className={reduceMotion ? undefined : "animate-pulse-slow"}
+          style={reduceMotion ? undefined : { animationDelay: `${i * 0.7}s` }}
+        >
           <path
-            key={`${d}-glow`}
             d={d}
             fill="none"
             stroke="url(#dcc-line-gradient)"
@@ -107,8 +158,8 @@ const ConnectionLines: React.FC<{ reduceMotion?: boolean }> = ({ reduceMotion })
             strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
           />
-        ))}
-      </g>
+        </g>
+      ))}
 
       {/* Crisp bright core line */}
       {connectionPaths.map(({ d }) => (
@@ -122,20 +173,6 @@ const ConnectionLines: React.FC<{ reduceMotion?: boolean }> = ({ reduceMotion })
           vectorEffect="non-scaling-stroke"
         />
       ))}
-
-      {!reduceMotion &&
-        connectionPaths.map(({ d }, i) => (
-          <foreignObject key={`${d}-particle`} x="0" y="0" width="1" height="1" overflow="visible">
-            <div
-              className="animate-travel-path h-[2px] w-[2px] rounded-full bg-white shadow-[0_0_5px_1.5px_rgba(94,234,212,0.9)]"
-              style={{
-                offsetPath: `path("${d}")`,
-                animationDuration: `${3.2 + i * 0.6}s`,
-                animationDelay: `${i * 0.7}s`,
-              }}
-            />
-          </foreignObject>
-        ))}
     </svg>
 
     {/* Glowing connector nodes — plain positioned divs, not part of the SVG's
@@ -155,10 +192,35 @@ export interface DeveloperCommandCenterProps {
   className?: string;
 }
 
+const TerminalLines: React.FC<{ lineIndex: number; charCount: number }> = ({
+  lineIndex,
+  charCount,
+}) => (
+  <>
+    {terminalLines.slice(0, lineIndex + 1).map((line, i) => {
+      const revealed = i === lineIndex ? line.text.slice(0, charCount) : line.text;
+      return (
+        <p key={line.text} className={line.className}>
+          <span className="text-secondary">{line.prefix}</span> {revealed}
+          {i === lineIndex && (
+            <span
+              aria-hidden="true"
+              className="ml-0.5 inline-block h-[0.9em] w-[2px] translate-y-[1px] animate-pulse bg-secondary/70"
+            />
+          )}
+        </p>
+      );
+    })}
+  </>
+);
+
 export const DeveloperCommandCenter: React.FC<DeveloperCommandCenterProps> = ({
   className = "",
 }) => {
   const prefersReducedMotion = useReducedMotion();
+  const { lineIndex, charCount } = useTypewriterLines(terminalLines, {
+    reduceMotion: !!prefersReducedMotion,
+  });
 
   return (
     <div
@@ -198,20 +260,14 @@ export const DeveloperCommandCenter: React.FC<DeveloperCommandCenterProps> = ({
           reduceMotion={!!prefersReducedMotion}
         >
           <PanelHeader icon={<Terminal className="h-3 w-3" />} label="terminal" />
-          <div className="space-y-1 p-2.5 font-mono text-[10px] leading-relaxed text-white/70">
-            <p>
-              <span className="text-secondary">$</span> npm run dev
-            </p>
-            <p className="text-primary/80">✓ server started on :3000</p>
-            <p className="flex items-center gap-1 text-white/40">
-              <span className="inline-block h-2.5 w-1 animate-pulse bg-secondary/70" />
-            </p>
+          <div className="min-h-[86px] space-y-1 p-2.5 font-mono text-[10px] leading-relaxed text-white/70">
+            <TerminalLines lineIndex={lineIndex} charCount={charCount} />
           </div>
         </GlassPanel>
 
         {/* API Gateway */}
         <GlassPanel
-          className="absolute left-[5%] top-[42%] w-[200px]"
+          className="absolute left-[5%] top-[48%] w-[200px]"
           floatDuration={8}
           floatDelay={0.5}
           reduceMotion={!!prefersReducedMotion}
@@ -271,7 +327,7 @@ export const DeveloperCommandCenter: React.FC<DeveloperCommandCenterProps> = ({
 
         {/* Recent Commits */}
         <GlassPanel
-          className="absolute left-[8%] top-[68%] w-[200px]"
+          className="absolute left-[8%] top-[74%] w-[200px]"
           floatDuration={7.5}
           floatDelay={0.8}
           reduceMotion={!!prefersReducedMotion}
@@ -323,11 +379,8 @@ export const DeveloperCommandCenter: React.FC<DeveloperCommandCenterProps> = ({
       <div className="relative z-10 flex min-h-[300px] w-full flex-col justify-between gap-3 p-4 pt-14 lg:hidden">
         <GlassPanel reduceMotion={!!prefersReducedMotion} floatDuration={7}>
           <PanelHeader icon={<Terminal className="h-3 w-3" />} label="terminal" />
-          <div className="space-y-1 p-2.5 font-mono text-[10px] leading-relaxed text-white/70">
-            <p>
-              <span className="text-secondary">$</span> npm run dev
-            </p>
-            <p className="text-primary/80">✓ server started on :3000</p>
+          <div className="min-h-[86px] space-y-1 p-2.5 font-mono text-[10px] leading-relaxed text-white/70">
+            <TerminalLines lineIndex={lineIndex} charCount={charCount} />
           </div>
         </GlassPanel>
 
