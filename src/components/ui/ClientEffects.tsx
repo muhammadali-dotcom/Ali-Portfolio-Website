@@ -3,9 +3,8 @@
 import dynamic from "next/dynamic";
 
 // These are purely presentational / client-only effects with no SEO or
-// above-the-fold layout relevance, so they're lazy-loaded with ssr:false —
-// consistent with how TechSphereCanvas is loaded in Hero.tsx — to keep them
-// off the initial server-rendered bundle and out of LCP timing.
+// above-the-fold layout relevance, so they're lazy-loaded with ssr:false to
+// keep them off the initial server-rendered bundle and out of LCP timing.
 const AnimatedBackground = dynamic(() => import("./AnimatedBackground"), {
   ssr: false,
 });

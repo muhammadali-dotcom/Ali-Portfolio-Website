@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { ArrowDown, Code2, Brain, Trophy, Lightbulb, FileText } from "lucide-react";
 
 import Button from "../ui/Button";
 import MagneticButton from "../ui/MagneticButton";
 import ResumeModal from "../ui/ResumeModal";
+import DeveloperCommandCenter from "../ui/DeveloperCommandCenter";
 import TypingRoles from "../animations/TypingRoles";
 import BlurRevealText from "../animations/BlurRevealText";
 import FadeInUp from "../animations/FadeInUp";
@@ -26,18 +26,6 @@ const floatingIcons = [
   { Icon: Trophy, position: "left-[2%] bottom-[8%]", delay: 0.6 },
   { Icon: Lightbulb, position: "right-[2%] bottom-[12%]", delay: 1.8 },
 ];
-
-const TechSphereCanvas = dynamic(() => import("../three/TechSphereCanvas"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-[420px] w-full items-center justify-center rounded-[2rem] border border-border bg-card text-body lg:h-[620px]">
-      <div className="flex flex-col items-center gap-4 text-sm font-medium">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-        <span>Initializing 3D Environment...</span>
-      </div>
-    </div>
-  ),
-});
 
 const trustBadges = [
   "Full-stack development",
@@ -157,14 +145,14 @@ export default function Hero() {
           </FadeInUp>
         </motion.div>
 
-        {/* Right 3D scene */}
+        {/* Right animation panel */}
         <motion.div
           className="relative flex w-full justify-center lg:min-h-[680px] lg:items-center lg:-translate-y-8 xl:-translate-y-10"
           style={{ x: sphereX, y: sphereY }}
         >
           <div className="relative w-full max-w-[420px] sm:max-w-[480px] lg:max-w-none">
             <FadeInUp delay={0.35} className="w-full">
-              <TechSphereCanvas />
+              <DeveloperCommandCenter className="h-[340px] sm:h-[380px] lg:h-[460px]" />
             </FadeInUp>
           </div>
         </motion.div>

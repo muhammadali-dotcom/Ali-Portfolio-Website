@@ -392,6 +392,51 @@ a {
   animation: shimmer 3s linear infinite;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Developer Command Center (Hero animation)
+───────────────────────────────────────────────────────────── */
+
+@keyframes travel-path {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  92% {
+    opacity: 1;
+  }
+
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-travel-path {
+  animation-name: travel-path;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  offset-rotate: 0deg;
+}
+
+@keyframes grid-pan {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 48px 48px;
+  }
+}
+
+.animate-grid-pan {
+  animation: grid-pan 14s linear infinite;
+}
+
 @keyframes scroll-left {
   from {
     transform: translateX(0);
