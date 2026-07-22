@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Muhammad Ali — Portfolio
 
-## Getting Started
+Personal portfolio site for Muhammad Ali, a full-stack software engineer. Built with Next.js 16 (App Router) and React 19, featuring animated sections, a projects showcase, and an in-page resume viewer.
 
-First, run the development server:
+## Tech stack
+
+- **Framework:** Next.js 16, React 19, TypeScript
+- **Styling:** Tailwind CSS 4
+- **Animation:** Framer Motion, GSAP, Lenis (smooth scroll)
+- **3D:** React Three Fiber / drei / three.js
+- **Icons:** lucide-react, react-icons
+- **Testing:** Jest + React Testing Library
+- **Analytics:** Google Analytics (via `NEXT_PUBLIC_GA_ID`)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the local dev server |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run the Jest test suite |
+| `npm run test:watch` | Run tests in watch mode |
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL used for metadata/OG tags (defaults to the production URL if unset) |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics measurement ID; GA is only loaded when this is set |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Key features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Animated hero, projects, and skills sections
+- In-page resume viewer/download modal (`src/components/ui/ResumeModal.tsx`, backed by `public/resume.pdf`)
+- SEO metadata, dynamic `sitemap.xml` / `robots.txt`, and JSON-LD structured data
+- Custom 404 and error pages
 
-## Deploy on Vercel
+## Project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See [`Docs/PROJECT_STRUCTURE.md`](Docs/PROJECT_STRUCTURE.md) and [`Docs/REQUIREMENTS.md`](Docs/REQUIREMENTS.md) for a deeper breakdown of the codebase layout and requirements.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+Deployed on [Vercel](https://vercel.com). Any push to the main branch triggers a new deployment.
