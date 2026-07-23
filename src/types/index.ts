@@ -43,6 +43,15 @@ export interface Experience {
   achievements: string[];
 }
 
+export interface Certification {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  image?: string;
+  credentialUrl?: string | null;
+}
+
 export interface Social {
   platform: string;
   url: string;
