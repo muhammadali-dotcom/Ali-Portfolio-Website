@@ -11,7 +11,11 @@ import FadeInUp from "../animations/FadeInUp";
 import { socials } from "@/data/socials";
 import { resolveIcon } from "@/lib/utils";
 
-export const Contact: React.FC = () => {
+interface ContactProps {
+  headingLevel?: 1 | 2;
+}
+
+export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -57,6 +61,7 @@ export const Contact: React.FC = () => {
           title="Have an idea, product, dashboard, or automation you want to build?"
           subtitle="Let's turn it into clean, scalable software."
           align="center"
+          level={headingLevel}
         />
       </FadeInUp>
 

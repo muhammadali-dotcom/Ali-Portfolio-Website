@@ -5,7 +5,15 @@ import FadeInUp from "../animations/FadeInUp";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { projects } from "@/data/projects";
 
-export const Projects: React.FC = () => {
+interface ProjectsProps {
+  headingLevel?: 1 | 2;
+  linkToDetail?: boolean;
+}
+
+export const Projects: React.FC<ProjectsProps> = ({
+  headingLevel = 2,
+  linkToDetail = false,
+}) => {
   return (
     <section id="projects" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       {/* Background Glow */}
@@ -16,6 +24,7 @@ export const Projects: React.FC = () => {
           badge="Featured Work"
           title="Projects Built to Solve Real Problems"
           subtitle="Case studies from full-stack web apps, real-time systems, and AI-powered tools — each one built to production standards, not just to look good in a demo."
+          level={headingLevel}
         />
       </FadeInUp>
 
@@ -26,7 +35,7 @@ export const Projects: React.FC = () => {
             key={project.id}
             className={project.featured ? "md:col-span-2" : "col-span-1"}
           >
-            <ProjectCard project={project} />
+            <ProjectCard project={project} linkToDetail={linkToDetail} />
           </StaggerItem>
         ))}
       </StaggerChildren>

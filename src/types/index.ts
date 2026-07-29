@@ -7,6 +7,7 @@ export type ProjectStatus =
 
 export interface Project {
   id: string;
+  slug: string;
   title: string;
   description: string;
   problem: string;

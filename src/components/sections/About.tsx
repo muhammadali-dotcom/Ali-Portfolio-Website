@@ -1,7 +1,13 @@
 import GlassCard from "../ui/GlassCard";
 import FadeInUp from "../animations/FadeInUp";
 
-export default function About() {
+interface AboutProps {
+  headingLevel?: 1 | 2;
+}
+
+export default function About({ headingLevel = 2 }: AboutProps) {
+  const HeadingTag = headingLevel === 1 ? "h1" : "h2";
+
   return (
     <section
       id="about"
@@ -14,9 +20,9 @@ export default function About() {
           hoverable={false}
           className="glass-panel-strong relative z-10 p-8 text-center sm:p-12"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-heading md:text-4xl">
+          <HeadingTag className="text-3xl font-bold tracking-tight text-heading md:text-4xl">
             About Me — <span className="text-primary">Behind the Code</span>
-          </h2>
+          </HeadingTag>
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-body lg:text-lg">
             I specialize in transforming complex ideas into elegant,

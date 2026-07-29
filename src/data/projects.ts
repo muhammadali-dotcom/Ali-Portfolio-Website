@@ -3,6 +3,7 @@ import { Project } from "@/types";
 export const projects: Project[] = [
   {
     id: "featured-1",
+    slug: "ems",
     title: "EMS — Enterprise Employee Management System",
     description:
       "A modern employee management platform for handling workforce operations, attendance tracking, and department management.",
@@ -29,6 +30,7 @@ export const projects: Project[] = [
   },
   {
     id: "project-2",
+    slug: "querybridge",
     title: "QueryBridge — AI-Powered Natural Language SQL Platform",
     description:
       "An AI-powered platform that enables users to query databases using natural language instead of writing SQL.",
@@ -53,6 +55,7 @@ export const projects: Project[] = [
   },
   {
     id: "project-3",
+    slug: "roomtalk",
     title: "RoomTalk — Real-Time Multi-Room Chat App",
     description:
       "A real-time multi-room chat platform with private messaging and Redis-backed temporary sessions.",
@@ -78,6 +81,7 @@ export const projects: Project[] = [
   },
   {
     id: "project-4",
+    slug: "expenzo",
     title: "Expenzo — Expense Tracker & Group Settlements",
     description:
       "A personal and group expense tracker with budgeting, analytics, and smart settlements for shared costs.",

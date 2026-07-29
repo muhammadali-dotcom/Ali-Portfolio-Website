@@ -6,7 +6,11 @@ import FadeInUp from "../animations/FadeInUp";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { faqs } from "@/data/faq";
 
-export const FAQ: React.FC = () => {
+interface FAQProps {
+  headingLevel?: 1 | 2;
+}
+
+export const FAQ: React.FC<FAQProps> = ({ headingLevel = 2 }) => {
   return (
     <section id="faq" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       <div className="absolute top-[20%] left-[5%] w-[350px] h-[350px] radial-glow opacity-20 pointer-events-none" />
@@ -16,6 +20,7 @@ export const FAQ: React.FC = () => {
           badge="FAQ"
           title="Common Questions"
           subtitle="Quick answers to what most people ask before reaching out."
+          level={headingLevel}
         />
       </FadeInUp>
 

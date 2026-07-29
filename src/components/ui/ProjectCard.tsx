@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { X, ExternalLink, BookOpen } from "lucide-react";
 import {
   motion,
@@ -13,10 +14,11 @@ import {
 import { Github } from "@/components/ui/Icons";
 import { Project } from "@/types";
 import GlassCard from "./GlassCard";
-import TechBadge from "./TechBadge";
+import ProjectDetails from "./ProjectCaseStudy";
 
 interface ProjectCardProps {
   project: Project;
+  linkToDetail?: boolean;
 }
 
 const StatusBadge: React.FC<{ status: Project["status"] }> = ({ status }) => (
@@ -25,60 +27,8 @@ const StatusBadge: React.FC<{ status: Project["status"] }> = ({ status }) => (
   </span>
 );
 
-const ProjectDetails: React.FC<{ project: Project }> = ({ project }) => {
-  const { problem, solution, result, features, tech } = project;
-
-  return (
-    <div className="space-y-5">
-      <div>
-        <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-secondary">
-          Problem
-        </h4>
-        <p className="text-sm leading-relaxed text-body">{problem}</p>
-      </div>
-
-      <div>
-        <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-secondary">
-          Solution
-        </h4>
-        <p className="text-sm leading-relaxed text-body">{solution}</p>
-      </div>
-
-      <div>
-        <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-secondary">
-          Result
-        </h4>
-        <p className="text-sm leading-relaxed text-body">{result}</p>
-      </div>
-
-      <div>
-        <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-secondary">
-          Key Features
-        </h4>
-        <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-          {features.map((feature) => (
-            <li
-              key={feature}
-              className="flex items-start gap-2 text-sm leading-relaxed text-body"
-            >
-              <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-secondary" />
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 pt-1">
-        {tech.map((item) => (
-          <TechBadge key={item} name={item} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { title, description, solution, image, github, live, status, featured } = project;
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail = false }) => {
+  const { title, slug, description, solution, image, github, live, status, featured } = project;
   const [mounted, setMounted] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const [imageError, setImageError] = React.useState(false);
@@ -163,7 +113,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           className={`group relative flex cursor-pointer flex-col h-full ${
             featured ? "md:col-span-2 md:flex-row gap-6 items-stretch" : "col-span-1"
           }`}
-          onClick={openModal}
+          onClick={linkToDetail ? undefined : openModal}
         >
           {/* Cursor-follow gradient overlay */}
           <motion.div
@@ -265,9 +215,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                       README
                     </a>
                   )}
-                  <span className="text-sm font-semibold text-primary">
-                    Case Study
-                  </span>
+                  {linkToDetail ? (
+                    <Link
+                      href={`/projects/${slug}`}
+                      data-cursor="link"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-sm font-semibold text-primary hover:underline"
+                    >
+                      Case Study
+                    </Link>
+                  ) : (
+                    <span className="text-sm font-semibold text-primary">
+                      Case Study
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
