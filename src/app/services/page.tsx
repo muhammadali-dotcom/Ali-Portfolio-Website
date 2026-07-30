@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/animations/PageTransition";
 import Services from "@/components/sections/Services";
+import ServiceJsonLd from "@/components/seo/ServiceJsonLd";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <PageTransition>
+      <ServiceJsonLd />
       <main className="relative w-full overflow-hidden">
         <Services headingLevel={1} />
       </main>

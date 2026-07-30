@@ -94,6 +94,10 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
+
+  verification: {
+    google: "ByDciF0G6tTJ1exJi7kz6Ypf_Vary-wNv7RviQBPzug",
+  },
 };
 
 export const viewport: Viewport = {

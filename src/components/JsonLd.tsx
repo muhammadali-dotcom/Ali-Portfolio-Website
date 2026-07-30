@@ -15,7 +15,7 @@ const personSchema = {
   jobTitle: "Full-Stack Software Engineer",
   url: siteUrl,
   image: `${siteUrl}/og-image.png`,
-  email: "mailto:alisaleem.as719@gmail.com",
+  email: "alisaleem.as719@gmail.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Karachi",
