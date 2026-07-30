@@ -9,7 +9,11 @@ import FadeInUp from "../animations/FadeInUp";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { certifications } from "@/data/certifications";
 
-export const Certifications: React.FC = () => {
+interface CertificationsProps {
+  headingLevel?: 1 | 2;
+}
+
+export const Certifications: React.FC<CertificationsProps> = ({ headingLevel = 2 }) => {
   return (
     <section id="certifications" className="relative overflow-hidden py-16 lg:py-24">
       <div className="absolute left-[5%] top-[10%] h-[380px] w-[380px] rounded-full bg-secondary/5 blur-[120px]" />
@@ -21,6 +25,7 @@ export const Certifications: React.FC = () => {
             badge="Credentials"
             title="Certifications."
             subtitle="Courses and credentials that back up the stack I work with."
+            level={headingLevel}
           />
         </FadeInUp>
 

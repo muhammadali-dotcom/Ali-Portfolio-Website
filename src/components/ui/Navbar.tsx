@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -8,23 +10,21 @@ import Button from "./Button";
 import MagneticButton from "./MagneticButton";
 
 const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Experience", href: "#experience" },
-  { name: "Certifications", href: "#certifications" },
-  { name: "Work", href: "#projects" },
-  { name: "Services", href: "#services" },
-  { name: "Stack", href: "#skills" },
-  { name: "Profiles", href: "#profiles" },
-  { name: "FAQ", href: "#faq" },
-  { name: "Contact", href: "#contact" },
+  { name: "About", href: "/about" },
+  { name: "Experience", href: "/experience" },
+  { name: "Certifications", href: "/certifications" },
+  { name: "Work", href: "/projects" },
+  { name: "Services", href: "/services" },
+  { name: "Stack", href: "/skills" },
+  { name: "Profiles", href: "/profiles" },
+  { name: "FAQ", href: "/faq" },
+  { name: "Contact", href: "/contact" },
 ];
-
-const sectionIds = navLinks.map((link) => link.href.slice(1));
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,28 +35,6 @@ export const Navbar: React.FC = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-
-  useEffect(() => {
-    const sections = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
-
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -70,16 +48,16 @@ export const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="#hero" className="text-xl font-bold tracking-tight text-heading hover:text-primary transition-colors duration-200">
+        <Link href="/" className="text-xl font-bold tracking-tight text-heading hover:text-primary transition-colors duration-200">
           ALI<span className="text-primary">.DEV</span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
-            const isActive = activeSection === link.href.slice(1);
+            const isActive = pathname === link.href;
             return (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 data-cursor="link"
@@ -98,7 +76,7 @@ export const Navbar: React.FC = () => {
                 ) : (
                   <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-primary group-hover:w-full transition-all duration-300 ease-out" />
                 )}
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -106,18 +84,16 @@ export const Navbar: React.FC = () => {
         {/* CTA Button */}
         <div className="hidden md:block">
           <MagneticButton>
-            <Button
-              variant="outline"
-              size="sm"
-              className="group flex items-center gap-1"
-              onClick={() => {
-                const element = document.getElementById("contact");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Let&apos;s Talk
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-            </Button>
+            <Link href="/contact">
+              <Button
+                variant="outline"
+                size="sm"
+                className="group flex items-center gap-1"
+              >
+                Let&apos;s Talk
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+              </Button>
+            </Link>
           </MagneticButton>
         </div>
 
@@ -153,36 +129,34 @@ export const Navbar: React.FC = () => {
               </div>
 
               <nav className="flex flex-col gap-6">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "text-lg font-medium transition-colors duration-200 border-b border-border pb-2",
-                      activeSection === link.href.slice(1)
-                        ? "text-primary"
-                        : "text-body hover:text-heading"
-                    )}
-                  >
-                    {link.name}
-                  </a>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "text-lg font-medium transition-colors duration-200 border-b border-border pb-2",
+                        isActive ? "text-primary" : "text-body hover:text-heading"
+                      )}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                })}
               </nav>
             </div>
 
-            <Button
-              variant="primary"
-              className="w-full flex items-center justify-center gap-1.5 mt-8"
-              onClick={() => {
-                setIsOpen(false);
-                const element = document.getElementById("contact");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Book a Free Call
-              <ArrowUpRight className="w-4 h-4" />
-            </Button>
+            <Link href="/contact" onClick={() => setIsOpen(false)} className="block w-full mt-8">
+              <Button
+                variant="primary"
+                className="w-full flex items-center justify-center gap-1.5"
+              >
+                Book a Free Call
+                <ArrowUpRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

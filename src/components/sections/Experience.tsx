@@ -52,7 +52,11 @@ const experience = [
   },
 ];
 
-export const Experience: React.FC = () => {
+interface ExperienceProps {
+  headingLevel?: 1 | 2;
+}
+
+export const Experience: React.FC<ExperienceProps> = ({ headingLevel = 2 }) => {
   const timelineRef = useRef<HTMLDivElement>(null);
   const lineFillRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -94,6 +98,7 @@ export const Experience: React.FC = () => {
           title="Work History"
           subtitle="A quick look at my professional journey, internships, and hands-on experience as a software engineer."
           align="center"
+          level={headingLevel}
         />
       </FadeInUp>
 

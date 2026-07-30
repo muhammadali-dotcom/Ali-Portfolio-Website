@@ -5,7 +5,11 @@ import ScrollReveal from "../animations/ScrollReveal";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { services } from "@/data/services";
 
-export const Services: React.FC = () => {
+interface ServicesProps {
+  headingLevel?: 1 | 2;
+}
+
+export const Services: React.FC<ServicesProps> = ({ headingLevel = 2 }) => {
   return (
     <section id="services" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       {/* Background Glow */}
@@ -16,6 +20,7 @@ export const Services: React.FC = () => {
           badge="What I Build"
           title="Software Built Around Your Business"
           subtitle="Outcome-focused engineering — from business platforms and real-time systems to AI tools and the APIs that power them."
+          level={headingLevel}
         />
       </ScrollReveal>
 

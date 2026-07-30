@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import * as Icons from "lucide-react";
 import * as CustomIcons from "@/components/ui/Icons";
 import { motion } from "framer-motion";
@@ -9,13 +10,13 @@ import { socials } from "@/data/socials";
 import { resolveIcon } from "@/lib/utils";
 
 const footerNavLinks = [
-  { name: "Home", href: "#hero" },
-  { name: "About", href: "#about" },
-  { name: "Experience", href: "#experience" },
-  { name: "Work", href: "#projects" },
-  { name: "Stack", href: "#skills" },
-  { name: "Profiles", href: "#profiles" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Experience", href: "/experience" },
+  { name: "Work", href: "/projects" },
+  { name: "Stack", href: "/skills" },
+  { name: "Profiles", href: "/profiles" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export const Footer: React.FC = () => {
@@ -33,14 +34,14 @@ export const Footer: React.FC = () => {
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           {footerNavLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
               data-cursor="link"
               className="text-sm font-medium text-body transition-colors hover:text-primary"
             >
               {link.name}
-            </a>
+            </Link>
           ))}
         </nav>
 

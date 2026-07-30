@@ -16,7 +16,11 @@ const actionLabel: Record<string, string> = {
   Email: "Email Me",
 };
 
-export default function Profiles() {
+interface ProfilesProps {
+  headingLevel?: 1 | 2;
+}
+
+export default function Profiles({ headingLevel = 2 }: ProfilesProps) {
   return (
     <section
       id="profiles"
@@ -28,6 +32,7 @@ export default function Profiles() {
           title="Find Me Around the Web"
           subtitle="Connect, follow, or reach out directly through any of the platforms below."
           align="center"
+          level={headingLevel}
         />
       </FadeInUp>
 

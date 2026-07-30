@@ -7,7 +7,11 @@ import FadeInUp from "../animations/FadeInUp";
 import StaggerChildren, { StaggerItem } from "../animations/StaggerChildren";
 import { skills } from "@/data/skills";
 
-export const Skills: React.FC = () => {
+interface SkillsProps {
+  headingLevel?: 1 | 2;
+}
+
+export const Skills: React.FC<SkillsProps> = ({ headingLevel = 2 }) => {
   return (
     <section id="skills" className="relative overflow-hidden py-16 lg:py-24">
       <div className="absolute left-[10%] top-[15%] h-[420px] w-[420px] rounded-full bg-primary/5 blur-[120px]" />
@@ -19,6 +23,7 @@ export const Skills: React.FC = () => {
             badge="Tech Stack"
             title="Tech I work with."
             subtitle="A focused stack for building scalable web apps, real-time systems, and AI-powered tools — end to end."
+            level={headingLevel}
           />
         </FadeInUp>
 
