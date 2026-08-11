@@ -10,6 +10,7 @@ import Button from "../ui/Button";
 import FadeInUp from "../animations/FadeInUp";
 import { socials } from "@/data/socials";
 import { resolveIcon } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 interface ContactProps {
   headingLevel?: 1 | 2;
@@ -24,30 +25,36 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setStatus("sending");
+    e.preventDefault();
+    setStatus("sending");
+    trackEvent("contact_form_submit", { status: "started" });
 
-  try {
-    const response = await fetch("https://formspree.io/f/xaqzbklp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(formState),
-    });
+    try {
+      const response = await fetch("https://formspree.io/f/xaqzbklp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formState),
+      });
 
-    if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) throw new Error("Network response was not ok");
 
-    setStatus("success");
-    setFormState({ name: "", email: "", message: "" });
-  } catch (error) {
-    console.error(error);
-    setStatus("error");
-  } finally {
-    setTimeout(() => setStatus("idle"), 5000);
-  }
-};
+      setStatus("success");
+      trackEvent("contact_form_submit", { status: "success" });
+      setFormState({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+      trackEvent("contact_form_submit", {
+        status: "error",
+        error: error instanceof Error ? error.message : "unknown",
+      });
+    } finally {
+      setTimeout(() => setStatus("idle"), 5000);
+    }
+  };
  
 
   return (

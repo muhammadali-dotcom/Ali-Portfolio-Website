@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import MagneticButton from "./MagneticButton";
+import { trackEvent } from "@/lib/analytics";
 
 const navLinks = [
   { name: "About", href: "/about" },
@@ -89,6 +90,7 @@ export const Navbar: React.FC = () => {
                 variant="outline"
                 size="sm"
                 className="group flex items-center gap-1"
+                onClick={() => trackEvent("cta_click", { location: "navbar_desktop", text: "Let's Talk" })}
               >
                 Let&apos;s Talk
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
@@ -148,7 +150,14 @@ export const Navbar: React.FC = () => {
               </nav>
             </div>
 
-            <Link href="/contact" onClick={() => setIsOpen(false)} className="block w-full mt-8">
+            <Link
+              href="/contact"
+              onClick={() => {
+                setIsOpen(false);
+                trackEvent("cta_click", { location: "navbar_mobile", text: "Book a Free Call" });
+              }}
+              className="block w-full mt-8"
+            >
               <Button
                 variant="primary"
                 className="w-full flex items-center justify-center gap-1.5"

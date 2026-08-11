@@ -12,6 +12,7 @@ import TypingRoles from "../animations/TypingRoles";
 import BlurRevealText from "../animations/BlurRevealText";
 import FadeInUp from "../animations/FadeInUp";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
+import { trackEvent } from "@/lib/analytics";
 
 const roles = [
   "Software Engineer",
@@ -115,7 +116,10 @@ export default function Hero() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => scrollToSection("contact")}
+                onClick={() => {
+                  scrollToSection("contact");
+                  trackEvent("cta_click", { location: "hero", text: "Let's Build Something" });
+                }}
               >
                 Let&apos;s Build Something
               </Button>
