@@ -1,6 +1,17 @@
 "use client";
 
-import StarfieldBackground from "@/components/three/StarfieldBackground";
+import dynamic from "next/dynamic";
+
+/**
+ * StarfieldBackground carries the entire Three.js bundle (~500 KB gzipped).
+ * Lazy-loading it here ensures it's split into its own chunk and never blocks
+ * the initial paint — even though AnimatedBackground itself is already
+ * dynamically imported from ClientEffects with ssr:false.
+ */
+const StarfieldBackground = dynamic(() => import("@/components/three/StarfieldBackground"), {
+  ssr: false,
+  loading: () => null,
+});
 
 /**
  * Fixed-position ambient background: a Three.js particle starfield (slow
@@ -13,10 +24,7 @@ import StarfieldBackground from "@/components/three/StarfieldBackground";
  */
 export default function AnimatedBackground() {
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
-    >
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <StarfieldBackground />
       <div className="absolute inset-0 mesh-bg" />
 

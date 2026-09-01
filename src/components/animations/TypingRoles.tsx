@@ -52,17 +52,32 @@ export default function TypingRoles({
     }
 
     return () => clearTimeout(timeout);
-  }, [phase, charCount, roleIndex, roles, typingSpeed, deletingSpeed, holdMs, prefersReducedMotion]);
+  }, [
+    phase,
+    charCount,
+    roleIndex,
+    roles,
+    typingSpeed,
+    deletingSpeed,
+    holdMs,
+    prefersReducedMotion,
+  ]);
 
   const currentRole = roles[roleIndex % roles.length];
+  const displayedText = currentRole.slice(0, charCount);
 
   return (
     <span className={cn("inline-flex items-center", className)}>
-      {currentRole.slice(0, charCount)}
-      <span
-        aria-hidden="true"
-        className="ml-1 inline-block h-[0.9em] w-[2px] animate-pulse bg-primary"
-      />
+      {/* Visible animated text */}
+      <span aria-hidden="true">
+        {displayedText}
+        <span className="ml-1 inline-block h-[0.9em] w-[2px] animate-pulse bg-primary" />
+      </span>
+
+      {/* Screen-reader-only live region — announces the full role once typing completes */}
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {phase === "typing" && charCount === currentRole.length ? currentRole : ""}
+      </span>
     </span>
   );
 }

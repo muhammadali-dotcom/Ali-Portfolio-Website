@@ -76,6 +76,7 @@ export const metadata: Metadata = {
     description:
       "Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools with Next.js, Node.js, and PostgreSQL.",
     images: ["/og-image.png"],
+    creator: "@ali_saleem719",
   },
 
   robots: {
@@ -121,6 +122,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen overflow-x-hidden bg-bg text-heading selection:bg-primary/25 selection:text-primary">
+        {/* Skip-to-content link — visible only on focus, critical for keyboard nav */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-full focus:bg-primary focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:outline-none"
+        >
+          Skip to main content
+        </a>
+
         <JsonLd />
         <SmoothScrollProvider>
           <div className="relative flex min-h-screen flex-col">
@@ -130,7 +139,7 @@ export default function RootLayout({
 
             <Navbar />
 
-            <main className="relative z-10 flex w-full flex-1 flex-col">
+            <main id="main-content" className="relative z-10 flex w-full flex-1 flex-col">
               {children}
             </main>
 

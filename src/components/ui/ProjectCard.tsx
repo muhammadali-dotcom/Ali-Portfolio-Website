@@ -1,20 +1,15 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { X, ExternalLink, BookOpen } from "lucide-react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
 import { Github } from "@/components/ui/Icons";
 import { Project } from "@/types";
 import GlassCard from "./GlassCard";
 import ProjectDetails from "./ProjectCaseStudy";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface ProjectCardProps {
   project: Project;
@@ -34,19 +29,34 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail 
   const [imageError, setImageError] = React.useState(false);
   const closeTimeout = React.useRef<number | null>(null);
 
+  const closeModal = () => {
+    setVisible(false);
+    closeTimeout.current = window.setTimeout(() => {
+      setMounted(false);
+      closeTimeout.current = null;
+    }, 220);
+  };
+
+  // Focus trap + Escape handler for the modal
+  const trapRef = useFocusTrap<HTMLDivElement>(visible, closeModal);
+
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    if (!visible) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [visible]);
+
   const prefersReducedMotion = useReducedMotion();
   const tiltRef = useRef<HTMLDivElement>(null);
   const pointerX = useMotionValue(0.5);
   const pointerY = useMotionValue(0.5);
   const springConfig = { stiffness: 220, damping: 22, mass: 0.4 };
-  const rotateX = useSpring(
-    useTransform(pointerY, [0, 1], [6, -6]),
-    springConfig
-  );
-  const rotateY = useSpring(
-    useTransform(pointerX, [0, 1], [-6, 6]),
-    springConfig
-  );
+  const rotateX = useSpring(useTransform(pointerY, [0, 1], [6, -6]), springConfig);
+  const rotateY = useSpring(useTransform(pointerX, [0, 1], [-6, 6]), springConfig);
   const glowX = useTransform(pointerX, (v) => `${v * 100}%`);
   const glowY = useTransform(pointerY, (v) => `${v * 100}%`);
 
@@ -71,14 +81,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail 
     }
     setMounted(true);
     requestAnimationFrame(() => setVisible(true));
-  };
-
-  const closeModal = () => {
-    setVisible(false);
-    closeTimeout.current = window.setTimeout(() => {
-      setMounted(false);
-      closeTimeout.current = null;
-    }, 220);
   };
 
   return (
@@ -159,7 +161,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail 
           </div>
 
           {/* Project Text Details */}
-          <div className={`relative z-10 flex flex-col flex-1 justify-between mt-4 ${featured ? "md:mt-0 md:w-3/5" : ""}`}>
+          <div
+            className={`relative z-10 flex flex-col flex-1 justify-between mt-4 ${featured ? "md:mt-0 md:w-3/5" : ""}`}
+          >
             <div>
               <div className="mb-2 flex items-start justify-between gap-3">
                 <h3 className="text-xl font-bold text-heading group-hover:text-primary transition-colors duration-300">
@@ -225,9 +229,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail 
                       Case Study
                     </Link>
                   ) : (
-                    <span className="text-sm font-semibold text-primary">
-                      Case Study
-                    </span>
+                    <span className="text-sm font-semibold text-primary">Case Study</span>
                   )}
                 </div>
               </div>
@@ -242,10 +244,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail 
           className="fixed inset-0 z-50 flex items-center justify-center p-6 overflow-auto"
           onClick={closeModal}
         >
-          <div className={`absolute inset-0 bg-black/70 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"}`} />
+          <div
+            className={`absolute inset-0 bg-black/70 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"}`}
+          />
           <div
             className={`relative z-10 max-w-3xl w-full bg-card rounded-2xl border border-border shadow-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-200 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
             onClick={(e) => e.stopPropagation()}
+            ref={trapRef}
             role="dialog"
             aria-modal="true"
             aria-label={`${title} details`}

@@ -1,0 +1,7 @@
+.next
+out
+node_modules
+public
+*.md
+package-lock.json
+*.svg

@@ -10,6 +10,8 @@ import { Github } from "@/components/ui/Icons";
 import ProjectJsonLd from "@/components/seo/ProjectJsonLd";
 import { projects } from "@/data/projects";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ali-portfolio-website-dev.vercel.app";
+
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -34,6 +36,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     },
     openGraph: {
       url: `/projects/${project.slug}`,
+      type: "article",
       title: `${project.title} | Muhammad Ali`,
       description: project.solution,
       images: [
@@ -61,9 +64,38 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   const { title, image, github, live, status } = project;
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: `${siteUrl}/projects`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.title,
+        item: `${siteUrl}/projects/${project.slug}`,
+      },
+    ],
+  };
+
   return (
     <PageTransition>
       <ProjectJsonLd project={project} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <main className="relative mx-auto w-full max-w-4xl overflow-hidden px-4 py-16 sm:px-6 lg:py-24">
         <Link
           href="/projects"

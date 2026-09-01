@@ -12,10 +12,12 @@ export default function ProjectJsonLd({ project }: ProjectJsonLdProps) {
     "@type": "SoftwareSourceCode",
     name: project.title,
     description: project.description,
+    abstract: project.problem,
     url: `${siteUrl}/projects/${project.slug}`,
     codeRepository: project.github ?? undefined,
     programmingLanguage: project.tech,
     keywords: project.tech.join(", "),
+    creativeWorkStatus: "Published",
     author: {
       "@type": "Person",
       name: "Muhammad Ali",

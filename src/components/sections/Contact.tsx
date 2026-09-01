@@ -11,6 +11,7 @@ import FadeInUp from "../animations/FadeInUp";
 import { socials } from "@/data/socials";
 import { resolveIcon } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
+import { sendContactEmail } from "@/app/actions/contact";
 
 interface ContactProps {
   headingLevel?: 1 | 2;
@@ -23,42 +24,44 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
+    setErrorMessage("");
     trackEvent("contact_form_submit", { status: "started" });
 
     try {
-      const response = await fetch("https://formspree.io/f/xaqzbklp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(formState),
-      });
+      const result = await sendContactEmail(formState);
 
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!result.success) {
+        throw new Error(result.error ?? "Something went wrong.");
+      }
 
       setStatus("success");
       trackEvent("contact_form_submit", { status: "success" });
       setFormState({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error(error);
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong. Please try again.";
+      console.error("[contact]", error);
       setStatus("error");
-      trackEvent("contact_form_submit", {
-        status: "error",
-        error: error instanceof Error ? error.message : "unknown",
-      });
+      setErrorMessage(msg);
+      trackEvent("contact_form_submit", { status: "error", error: msg });
     } finally {
-      setTimeout(() => setStatus("idle"), 5000);
+      setTimeout(() => {
+        setStatus("idle");
+        setErrorMessage("");
+      }, 6000);
     }
   };
- 
 
   return (
-    <section id="contact" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
+    <section
+      id="contact"
+      className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto"
+    >
       {/* Background Glow */}
       <div className="absolute bottom-0 left-[10%] w-[450px] h-[450px] radial-glow opacity-30 pointer-events-none" />
 
@@ -73,7 +76,6 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
       </FadeInUp>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 items-stretch">
-        
         {/* Left Side: Direct Contact Details */}
         <div className="lg:col-span-5 flex flex-col justify-between gap-6">
           <FadeInUp delay={0.2} className="h-full">
@@ -81,7 +83,9 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
               <div>
                 <h3 className="text-2xl font-bold text-heading mb-4">Let&apos;s build together</h3>
                 <p className="text-sm text-body leading-relaxed mb-8">
-                  Whether you have an established design file ready for implementation, require a custom cross-platform app, or seek technical engineering consultation, my inbox is open.
+                  Whether you have an established design file ready for implementation, require a
+                  custom cross-platform app, or seek technical engineering consultation, my inbox is
+                  open.
                 </p>
 
                 {/* Direct links */}
@@ -112,7 +116,9 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
                             {social.platform}
                           </span>
                           <span className="text-sm font-semibold text-heading group-hover:text-primary">
-                            {social.platform === "Email" ? "alisaleem.as719@gmail.com" : `Connect on ${social.platform}`}
+                            {social.platform === "Email"
+                              ? "alisaleem.as719@gmail.com"
+                              : `Connect on ${social.platform}`}
                           </span>
                         </div>
                       </a>
@@ -150,7 +156,10 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
 
                   {/* Name field */}
                   <div className="group relative">
-                    <label htmlFor="name" className="block text-xs font-semibold text-body uppercase tracking-wider mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-xs font-semibold text-body uppercase tracking-wider mb-2"
+                    >
                       Your Name
                     </label>
                     <input
@@ -167,7 +176,10 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
 
                   {/* Email field */}
                   <div className="group relative">
-                    <label htmlFor="email" className="block text-xs font-semibold text-body uppercase tracking-wider mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-xs font-semibold text-body uppercase tracking-wider mb-2"
+                    >
                       Your Email
                     </label>
                     <input
@@ -184,7 +196,10 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
 
                   {/* Message field */}
                   <div className="group relative">
-                    <label htmlFor="message" className="block text-xs font-semibold text-body uppercase tracking-wider mb-2">
+                    <label
+                      htmlFor="message"
+                      className="block text-xs font-semibold text-body uppercase tracking-wider mb-2"
+                    >
                       Message
                     </label>
                     <textarea
@@ -224,12 +239,24 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
                       Message sent successfully!
                     </motion.span>
                   )}
+
+                  {status === "error" && (
+                    <motion.span
+                      initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      role="alert"
+                      className="text-sm text-red-400 font-semibold flex items-center gap-1.5"
+                    >
+                      <Icons.AlertCircle className="w-4 h-4 shrink-0" />
+                      {errorMessage || "Something went wrong. Please try again."}
+                    </motion.span>
+                  )}
                 </div>
               </form>
             </GlassCard>
           </FadeInUp>
         </div>
-
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X, Download, ExternalLink } from "lucide-react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface ResumeModalProps {
   open: boolean;
@@ -14,23 +15,17 @@ const RESUME_PATH = "/resume.pdf";
 
 export default function ResumeModal({ open, onClose }: ResumeModalProps) {
   const prefersReducedMotion = useReducedMotion();
+  const trapRef = useFocusTrap<HTMLDivElement>(open, onClose);
 
+  // Lock body scroll while open
   useEffect(() => {
     if (!open) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (typeof document === "undefined") return null;
 
@@ -54,10 +49,19 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
           />
 
           <motion.div
+            ref={trapRef}
             className="glass-panel-strong relative z-10 flex h-[85vh] w-full max-w-3xl flex-col rounded-2xl p-5 sm:p-6"
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24, scale: prefersReducedMotion ? 1 : 0.97 }}
+            initial={{
+              opacity: 0,
+              y: prefersReducedMotion ? 0 : 24,
+              scale: prefersReducedMotion ? 1 : 0.97,
+            }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 24, scale: prefersReducedMotion ? 1 : 0.97 }}
+            exit={{
+              opacity: 0,
+              y: prefersReducedMotion ? 0 : 24,
+              scale: prefersReducedMotion ? 1 : 0.97,
+            }}
             transition={{ duration: prefersReducedMotion ? 0.01 : 0.25, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mb-4 flex items-center justify-between">
@@ -78,11 +82,7 @@ export default function ResumeModal({ open, onClose }: ResumeModalProps) {
             </div>
 
             <div className="min-h-0 flex-1 overflow-hidden rounded-xl border border-border bg-bg-soft">
-              <iframe
-                src={RESUME_PATH}
-                title="Resume"
-                className="h-full w-full"
-              />
+              <iframe src={RESUME_PATH} title="Resume" className="h-full w-full" />
             </div>
 
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">

@@ -22,6 +22,24 @@ const personSchema = {
     addressCountry: "PK",
   },
   sameAs: sameAsLinks,
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Sir Syed University of Engineering & Technology",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Karachi",
+      addressCountry: "PK",
+    },
+  },
+  hasCredential: {
+    "@type": "EducationalOccupationalCredential",
+    credentialCategory: "degree",
+    name: "BS Computer Science",
+    recognizedBy: {
+      "@type": "CollegeOrUniversity",
+      name: "Sir Syed University of Engineering & Technology",
+    },
+  },
   knowsAbout: [
     "Next.js",
     "TypeScript",
@@ -34,9 +52,13 @@ const personSchema = {
     "REST APIs",
     "Docker",
     "AI Integrations",
+    "React Native",
+    "Full-Stack Web Development",
+    "Real-Time Systems",
   ],
   description:
-    "Full-Stack Software Engineer building scalable web apps, real-time systems, and AI-powered tools.",
+    "Full-Stack Software Engineer based in Karachi, Pakistan. BS Computer Science graduate (Sir Syed University, 2025) building scalable web apps, real-time systems, and AI-powered tools.",
+  availableForHire: true,
 };
 
 const websiteSchema = {
@@ -72,6 +94,34 @@ const faqSchema = {
   })),
 };
 
+const howIBuildSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "How Muhammad Ali Builds Software",
+  description: "Muhammad Ali's engineering philosophy and approach to building software products.",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Business-first thinking",
+      description:
+        "Focus on solving the real business problem, not just building features that look good.",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Clean and scalable code",
+      description: "Maintainable structure, reusable components, clean APIs, and readable logic.",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "User experience matters",
+      description: "A product should not only work — it should feel smooth, fast, and easy to use.",
+    },
+  ],
+};
+
 export default function JsonLd() {
   return (
     <>
@@ -90,6 +140,10 @@ export default function JsonLd() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howIBuildSchema) }}
       />
     </>
   );
