@@ -1,6 +1,6 @@
 "use server";
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 export interface ContactFormData {
   name: string;
@@ -14,12 +14,12 @@ export interface ContactResult {
 }
 
 /**
- * Server Action — sends a contact form submission via Resend.
+ * Server Action — sends a contact form submission via Nodemailer + Gmail.
  *
  * Environment variables required (add to .env.local + Vercel project settings):
- *   RESEND_API_KEY=re_xxxxxxxxxxxx          — from https://resend.com/api-keys
- *   CONTACT_TO_EMAIL=you@example.com        — where to receive messages
- *   CONTACT_FROM_EMAIL=noreply@yourdomain.com — verified Resend sender domain
+ *   GMAIL_USER=alisaleem.as719@gmail.com        — your Gmail address
+ *   GMAIL_APP_PASSWORD=xxxx                     — Gmail App Password (Google Account → Security → App passwords)
+ *   CONTACT_TO_EMAIL=alisaleem.as719@gmail.com  — where to receive messages (defaults to GMAIL_USER)
  */
 export async function sendContactEmail(data: ContactFormData): Promise<ContactResult> {
   // ── Input validation ──────────────────────────────────────────────────────
@@ -40,58 +40,63 @@ export async function sendContactEmail(data: ContactFormData): Promise<ContactRe
     return { success: false, error: "Message must be under 5000 characters." };
   }
 
-  // ── Resend ────────────────────────────────────────────────────────────────
-  const apiKey = process.env.RESEND_API_KEY;
-  const toEmail = process.env.CONTACT_TO_EMAIL ?? "alisaleem.as719@gmail.com";
-  const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev"; // resend default for testing
+  // ── Nodemailer ────────────────────────────────────────────────────────────
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  const toEmail = process.env.CONTACT_TO_EMAIL ?? gmailUser;
 
-  if (!apiKey) {
-    // Key not configured — fall back silently so the UI can show a useful error
-    console.error("[contact] RESEND_API_KEY is not set.");
+  if (!gmailUser || !gmailPass) {
+    console.error("[contact] GMAIL_USER or GMAIL_APP_PASSWORD is not set.");
     return {
       success: false,
       error: "Email service is not configured. Please reach out directly.",
     };
   }
 
-  const resend = new Resend(apiKey);
-
-  const { error } = await resend.emails.send({
-    from: `Portfolio Contact <${fromEmail}>`,
-    to: [toEmail],
-    replyTo: email,
-    subject: `New message from ${name} — Portfolio`,
-    html: `
-      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1e293b">
-        <h2 style="margin-bottom:4px">New Contact Message</h2>
-        <p style="color:#64748b;font-size:14px;margin-top:0">Received via your portfolio contact form</p>
-        <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0"/>
-        <table style="width:100%;border-collapse:collapse">
-          <tr>
-            <td style="padding:8px 0;font-weight:600;width:80px;vertical-align:top">Name</td>
-            <td style="padding:8px 0">${escapeHtml(name)}</td>
-          </tr>
-          <tr>
-            <td style="padding:8px 0;font-weight:600;vertical-align:top">Email</td>
-            <td style="padding:8px 0">
-              <a href="mailto:${escapeHtml(email)}" style="color:#3b82f6">${escapeHtml(email)}</a>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:8px 0;font-weight:600;vertical-align:top">Message</td>
-            <td style="padding:8px 0;white-space:pre-wrap">${escapeHtml(message)}</td>
-          </tr>
-        </table>
-        <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0"/>
-        <p style="font-size:12px;color:#94a3b8">
-          Sent from your portfolio at ${new Date().toUTCString()}
-        </p>
-      </div>
-    `,
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: gmailUser,
+      pass: gmailPass,
+    },
   });
 
-  if (error) {
-    console.error("[contact] Resend error:", error);
+  try {
+    await transporter.sendMail({
+      from: `"Portfolio Contact Form" <${gmailUser}>`,
+      to: toEmail,
+      replyTo: email,
+      subject: `New message from ${name} — Portfolio`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1e293b">
+          <h2 style="margin-bottom:4px">New Contact Message</h2>
+          <p style="color:#64748b;font-size:14px;margin-top:0">Received via your portfolio contact form</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0"/>
+          <table style="width:100%;border-collapse:collapse">
+            <tr>
+              <td style="padding:8px 0;font-weight:600;width:80px;vertical-align:top">Name</td>
+              <td style="padding:8px 0">${escapeHtml(name)}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;font-weight:600;vertical-align:top">Email</td>
+              <td style="padding:8px 0">
+                <a href="mailto:${escapeHtml(email)}" style="color:#3b82f6">${escapeHtml(email)}</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;font-weight:600;vertical-align:top">Message</td>
+              <td style="padding:8px 0;white-space:pre-wrap">${escapeHtml(message)}</td>
+            </tr>
+          </table>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0"/>
+          <p style="font-size:12px;color:#94a3b8">
+            Sent from your portfolio at ${new Date().toUTCString()}
+          </p>
+        </div>
+      `,
+    });
+  } catch (err) {
+    console.error("[contact] Nodemailer error:", err);
     return { success: false, error: "Failed to send. Please try again later." };
   }
 
