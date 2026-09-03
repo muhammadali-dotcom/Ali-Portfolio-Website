@@ -14,6 +14,7 @@ import { useFocusTrap } from "@/hooks/useFocusTrap";
 interface ProjectCardProps {
   project: Project;
   linkToDetail?: boolean;
+  priority?: boolean;
 }
 
 const StatusBadge: React.FC<{ status: Project["status"] }> = ({ status }) => (
@@ -22,7 +23,11 @@ const StatusBadge: React.FC<{ status: Project["status"] }> = ({ status }) => (
   </span>
 );
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail = false }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({
+  project,
+  linkToDetail = false,
+  priority = false,
+}) => {
   const { title, slug, description, solution, image, github, live, status, featured } = project;
   const [mounted, setMounted] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
@@ -149,6 +154,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, linkToDetail 
                   alt={`${title} screenshot`}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={priority}
                   className={featured ? "object-cover" : "object-contain p-4"}
                   onError={() => setImageError(true)}
                 />

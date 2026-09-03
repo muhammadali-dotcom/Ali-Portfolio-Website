@@ -10,12 +10,12 @@ interface ProjectsProps {
   linkToDetail?: boolean;
 }
 
-export const Projects: React.FC<ProjectsProps> = ({
-  headingLevel = 2,
-  linkToDetail = false,
-}) => {
+export const Projects: React.FC<ProjectsProps> = ({ headingLevel = 2, linkToDetail = false }) => {
   return (
-    <section id="projects" className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto">
+    <section
+      id="projects"
+      className="relative overflow-hidden py-16 px-4 sm:px-6 lg:py-24 max-w-7xl mx-auto"
+    >
       {/* Background Glow */}
       <div className="absolute top-[40%] right-[5%] w-[450px] h-[450px] radial-glow opacity-30 pointer-events-none" />
 
@@ -30,12 +30,12 @@ export const Projects: React.FC<ProjectsProps> = ({
 
       {/* Bento Grid layout */}
       <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <StaggerItem
             key={project.id}
             className={project.featured ? "md:col-span-2" : "col-span-1"}
           >
-            <ProjectCard project={project} linkToDetail={linkToDetail} />
+            <ProjectCard project={project} linkToDetail={linkToDetail} priority={index === 0} />
           </StaggerItem>
         ))}
       </StaggerChildren>

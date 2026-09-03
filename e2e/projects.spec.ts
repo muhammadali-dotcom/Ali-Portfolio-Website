@@ -19,18 +19,18 @@ test.describe("Projects section", () => {
   });
 
   test("project card opens detail page or modal on click", async ({ page }) => {
-    // Click the first project card
     const firstCard = page.locator("[data-cursor='card']").first();
 
-    // Check whether it's a link-to-detail card or a modal card
-    const isLink = await firstCard.getAttribute("href").catch(() => null);
+    // On /projects, cards render with a "Case Study" link to the detail page;
+    // elsewhere (e.g. the homepage), cards without linkToDetail open a modal instead.
+    const caseStudyLink = page.locator("a", { hasText: "Case Study" }).first();
 
-    if (isLink) {
-      // link card — navigates to detail page
-      await firstCard.click();
+    if (await caseStudyLink.count()) {
+      await caseStudyLink.click();
+      await page.waitForURL(/\/projects\/.+/);
       await expect(page).not.toHaveURL("/projects");
     } else {
-      // modal card — opens an in-page dialog
+      // modal card — clicking the card itself opens an in-page dialog
       await firstCard.click();
       const dialog = page.getByRole("dialog");
       await expect(dialog).toBeVisible();

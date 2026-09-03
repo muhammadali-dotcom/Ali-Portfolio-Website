@@ -31,7 +31,7 @@ test.describe("Homepage", () => {
   });
 
   test("navbar is visible with the logo", async ({ page }) => {
-    await expect(page.getByText(/ALI\.DEV/)).toBeVisible();
+    await expect(page.getByRole("link", { name: "ALI.DEV" })).toBeVisible();
   });
 
   test("has no console errors on load", async ({ page }) => {

@@ -1,5 +1,6 @@
 import { socials } from "@/data/socials";
 import { faqs } from "@/data/faq";
+import { services } from "@/data/services";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ali-portfolio-website-dev.vercel.app";
 
@@ -122,6 +123,39 @@ const howIBuildSchema = {
   ],
 };
 
+const professionalServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Muhammad Ali — Full-Stack Software Engineering Services",
+  url: `${siteUrl}/services`,
+  provider: { "@type": "Person", name: "Muhammad Ali" },
+  areaServed: "Worldwide",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Services",
+    itemListElement: services.map((service) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: service.title,
+        description: service.description,
+      },
+    })),
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "About", item: `${siteUrl}/about` },
+    { "@type": "ListItem", position: 3, name: "Services", item: `${siteUrl}/services` },
+    { "@type": "ListItem", position: 4, name: "Work", item: `${siteUrl}/projects` },
+    { "@type": "ListItem", position: 5, name: "Contact", item: `${siteUrl}/contact` },
+  ],
+};
+
 export default function JsonLd() {
   return (
     <>
@@ -144,6 +178,14 @@ export default function JsonLd() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howIBuildSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </>
   );

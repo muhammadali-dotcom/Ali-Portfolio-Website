@@ -39,6 +39,7 @@ export const Certifications: React.FC<CertificationsProps> = ({ headingLevel = 2
                       src={cert.image}
                       alt={cert.title}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover"
                     />
                   ) : (
@@ -52,9 +53,7 @@ export const Certifications: React.FC<CertificationsProps> = ({ headingLevel = 2
                     <span className="text-xs font-medium uppercase tracking-wider text-body/70">
                       {cert.date}
                     </span>
-                    {cert.credentialUrl && (
-                      <ExternalLink className="h-4 w-4 text-primary" />
-                    )}
+                    {cert.credentialUrl && <ExternalLink className="h-4 w-4 text-primary" />}
                   </div>
                 </div>
               </GlassCard>
