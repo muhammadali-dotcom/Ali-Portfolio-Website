@@ -1,16 +1,49 @@
 "use server";
 
 import nodemailer from "nodemailer";
+import { headers } from "next/headers";
 
 export interface ContactFormData {
   name: string;
   email: string;
   message: string;
+  /** Honeypot field — real users never fill this in; bots often do. */
+  honeypot?: string;
 }
 
 export interface ContactResult {
   success: boolean;
   error?: string;
+}
+
+// ── Rate limiting ──────────────────────────────────────────────────────────
+// Best-effort, in-memory sliding-window limiter keyed by IP. This resets on
+// server restart/redeploy and isn't shared across serverless instances —
+// acceptable for a personal portfolio's traffic, not a robust production
+// limiter. Swap for Upstash/Redis if this ever needs to scale.
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 3;
+const submissionsByIp = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = (submissionsByIp.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+
+  if (timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
+    submissionsByIp.set(ip, timestamps);
+    return true;
+  }
+
+  timestamps.push(now);
+  submissionsByIp.set(ip, timestamps);
+  return false;
+}
+
+async function getClientIp(): Promise<string> {
+  const headersList = await headers();
+  const forwardedFor = headersList.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+  return headersList.get("x-real-ip") ?? "unknown";
 }
 
 /**
@@ -22,6 +55,16 @@ export interface ContactResult {
  *   CONTACT_TO_EMAIL=alisaleem.as719@gmail.com  — where to receive messages (defaults to GMAIL_USER)
  */
 export async function sendContactEmail(data: ContactFormData): Promise<ContactResult> {
+  // Honeypot — silently "succeed" without sending mail so bots don't learn to avoid this field.
+  if (data.honeypot) {
+    return { success: true };
+  }
+
+  const ip = await getClientIp();
+  if (isRateLimited(ip)) {
+    return { success: false, error: "Too many messages sent. Please try again later." };
+  }
+
   // ── Input validation ──────────────────────────────────────────────────────
   const name = data.name?.trim();
   const email = data.email?.trim().toLowerCase();
@@ -29,6 +72,9 @@ export async function sendContactEmail(data: ContactFormData): Promise<ContactRe
 
   if (!name || name.length < 2) {
     return { success: false, error: "Name must be at least 2 characters." };
+  }
+  if (name.length > 100) {
+    return { success: false, error: "Name must be under 100 characters." };
   }
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { success: false, error: "Please provide a valid email address." };

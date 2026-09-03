@@ -9,6 +9,7 @@ import Footer from "@/components/ui/Footer";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import ClientEffects from "@/components/ui/ClientEffects";
+import CookieConsent from "@/components/ui/CookieConsent";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import JsonLd from "@/components/JsonLd";
 
@@ -146,6 +147,8 @@ export default function RootLayout({
             <Footer />
           </div>
         </SmoothScrollProvider>
+
+        <CookieConsent />
 
         {GA_ID && (
           <>

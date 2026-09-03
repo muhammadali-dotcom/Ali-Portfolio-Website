@@ -22,6 +22,7 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
     name: "",
     email: "",
     message: "",
+    honeypot: "",
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -41,7 +42,7 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
 
       setStatus("success");
       trackEvent("contact_form_submit", { status: "success" });
-      setFormState({ name: "", email: "", message: "" });
+      setFormState({ name: "", email: "", message: "", honeypot: "" });
     } catch (error) {
       const msg =
         error instanceof Error ? error.message : "Something went wrong. Please try again.";
@@ -153,6 +154,23 @@ export const Contact: React.FC<ContactProps> = ({ headingLevel = 2 }) => {
               <form onSubmit={handleSubmit} className="flex flex-col gap-6 h-full justify-between">
                 <div className="space-y-6">
                   <h3 className="text-xl font-bold text-heading mb-2">Send a Message</h3>
+
+                  {/* Honeypot field — hidden from real users, catches bots */}
+                  <div
+                    className="absolute left-[-9999px] w-px h-px overflow-hidden"
+                    aria-hidden="true"
+                  >
+                    <label htmlFor="company">Company</label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formState.honeypot}
+                      onChange={(e) => setFormState({ ...formState, honeypot: e.target.value })}
+                    />
+                  </div>
 
                   {/* Name field */}
                   <div className="group relative">

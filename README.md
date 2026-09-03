@@ -38,6 +38,9 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL used for metadata/OG tags (defaults to the production URL if unset) |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics measurement ID; GA is only loaded when this is set |
+| `GMAIL_USER` | Gmail address used to send contact form emails |
+| `GMAIL_APP_PASSWORD` | Gmail App Password for `GMAIL_USER` (Google Account → Security → App passwords) |
+| `CONTACT_TO_EMAIL` | Where contact form messages are delivered (defaults to `GMAIL_USER`) |
 
 ## Key features
 

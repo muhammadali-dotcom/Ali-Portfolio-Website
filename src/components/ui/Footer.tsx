@@ -27,9 +27,7 @@ export const Footer: React.FC = () => {
           <span className="text-lg font-bold text-heading">
             ALI<span className="text-primary">.DEV</span>
           </span>
-          <p className="text-xs text-body">
-            Building software that solves real problems.
-          </p>
+          <p className="text-xs text-body">Building software that solves real problems.</p>
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
@@ -46,16 +44,9 @@ export const Footer: React.FC = () => {
         </nav>
 
         {/* Social Links */}
-        <FadeInUp
-          className="flex items-center gap-4"
-          viewport={{ once: true, amount: 0 }}
-        >
+        <FadeInUp className="flex items-center gap-4" viewport={{ once: true, amount: 0 }}>
           {socials.map((social) => {
-            const IconComponent = resolveIcon(
-              [Icons, CustomIcons],
-              social.iconName,
-              Icons.Link
-            );
+            const IconComponent = resolveIcon([Icons, CustomIcons], social.iconName, Icons.Link);
             return (
               <motion.a
                 key={social.platform}
@@ -79,7 +70,10 @@ export const Footer: React.FC = () => {
         </FadeInUp>
 
         <p className="text-xs text-body">
-          © {new Date().getFullYear()} Ali. All rights reserved.
+          © {new Date().getFullYear()} Ali. All rights reserved.{" "}
+          <Link href="/privacy-policy" className="hover:text-primary transition-colors">
+            Privacy Policy
+          </Link>
         </p>
       </div>
     </footer>
